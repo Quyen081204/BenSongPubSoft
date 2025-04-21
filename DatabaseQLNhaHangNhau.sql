@@ -1,0 +1,405 @@
+﻿-- Create database
+CREATE DATABASE QLQuanNhau
+GO
+
+USE QLQuanNhau
+GO
+
+-- Tao bang
+CREATE TABLE Account
+(
+	id INT IDENTITY PRIMARY KEY,
+	username NVARCHAR(50) NOT NULL,
+	password VARCHAR(60) NOT NULL,
+	NhanVienID INT NOT NULL
+)
+GO
+
+CREATE TABLE ChucVu
+(
+	id INT IDENTITY PRIMARY KEY,
+	TenChucVu NVARCHAR(50) NOT NULL
+)
+GO
+
+CREATE TABLE NhanVien
+(
+	id INT IDENTITY PRIMARY KEY,
+	ho NVARCHAR(50) NOT NULL,
+	ten NVARCHAR(10) NOT NULL,
+	GioiTinh INT NOT NULL DEFAULT 1, -- 1: Nam, 0: Nữ
+	ChucVuID INT NOT NULL,
+	Joined_date DATE NOT NULL DEFAULT GetDate()
+)
+GO
+
+CREATE TABLE Ban
+(
+	id INT IDENTITY PRIMARY KEY,
+	TenBan NVARCHAR(15) NOT NULL,
+	TrangThai INT NOT NULL DEFAULT 0, -- 0: trong 1: da co nguoi
+	SLChua INT NOT NULL DEFAULT 5,
+	TableDetailID INT NULL
+)
+GO
+
+CREATE TABLE ChiTietBan
+(
+	id INT IDENTITY PRIMARY KEY,
+	BanID INT NOT NULL,
+	NhanVienID INT NOT NULL,
+	ThoiGianDat DATETIME NOT NULL DEFAULT GetDate(),
+	SLKhach INT NOT NULL DEFAULT 2,
+	SDTKhach VARCHAR(10) NOT NULL,
+	TenKhach NVARCHAR(10)
+)
+GO
+
+CREATE TABLE Menu
+(
+	id INT IDENTITY PRIMARY KEY,
+	TenMenu NVARCHAR(50) NOT NULL DEFAULT N'Best Seller'
+)
+GO
+
+CREATE TABLE MonAn
+(
+	id INT IDENTITY PRIMARY KEY,
+	TenMonAn NVARCHAR(30) NOT NULL,
+	GiaBan FLOAT NOT NULL DEFAULT 30000,
+	MenuID INT NOT NULL
+)
+GO
+
+CREATE TABLE OrderMon
+(
+	id INT IDENTITY PRIMARY KEY,
+	ChiTietBanID INT NOT NULL,
+	MonAnID INT NOT NULL,
+	ThoiGianOrder TIME NOT NULL DEFAULT GetDate(),
+	SoLuong INT NOT NULL DEFAULT 1
+)
+GO
+
+CREATE TABLE HoaDon
+(
+	id INT IDENTITY PRIMARY KEY,
+	NhanVienID INT NOT NULL,
+	ChiTietBanID INT NOT NULL,
+	ThoiGianLap DATETIME NOT NULL DEFAULT GetDate(),
+	PTThanhToan NVARCHAR(10) NOT NULL DEFAULT N'Tiền mặt'
+)
+GO
+
+CREATE TABLE LoaiThucPham
+(
+	id INT IDENTITY PRIMARY KEY,
+	Ten NVARCHAR(50) NOT NULL,
+	DonViTinh VARCHAR(20) NOT NULL DEFAULT 'Kg'
+)
+GO
+
+CREATE TABLE ThucPham
+(
+	id INT IDENTITY PRIMARY KEY,
+	Ten NVARCHAR(50) NOT NULL,
+	LoaiThucPhamId INT NOT NULL DEFAULT 1,
+	SoLuong INT NOT NULL DEFAULT 0
+)
+GO
+
+CREATE TABLE PhieuKho
+(
+	id INT IDENTITY PRIMARY KEY,
+	NgayNhapKho DATETIME NOT NULL DEFAULT GetDate(),
+	LoaiPhieuKho NVARCHAR(10) NOT NULL DEFAULT 'Nhập kho',
+	NhanVienID INT NOT NULL
+)
+GO
+
+CREATE TABLE ChiTietNhapKho
+(
+	id INT IDENTITY PRIMARY KEY,
+	NhapKhoID INT NOT NULL,
+	ThucPhamID INT NOT NULL,
+	SL INT NOT NULL DEFAULT 1,
+	DonGia FLOAT NOT NULL DEFAULT 10000
+)
+GO
+
+CREATE TABLE ChiTietXuatKho
+(
+	id INT IDENTITY PRIMARY KEY,
+	XuatKhoID INT NOT NULL,
+	ThucPhamID INT NOT NULL,
+	SL INT NOT NULL DEFAULT 1,
+)
+GO
+
+-- Them khoa ngoai va them unique constraint
+
+ALTER TABLE Account
+ADD CONSTRAINT FK_Account_NhanVien FOREIGN KEY (NhanVienID) REFERENCES NhanVien(id),
+	CONSTRAINT AK_username UNIQUE (username);
+
+ALTER TABLE NhanVien
+ADD CONSTRAINT FK_NhanVien_ChucVu FOREIGN KEY (ChucVuID) REFERENCES ChucVu(id)
+
+ALTER TABLE Ban
+ADD CONSTRAINT FK_TableDetailID FOREIGN KEY (TableDetailID) REFERENCES ChiTietBan(id),
+	CONSTRAINT AK_TableDetailID UNIQUE (TableDetailID)
+
+ALTER TABLE Ban
+DROP CONSTRAINT AK_TableDetailID
+
+CREATE UNIQUE INDEX Ban_TableDetailID
+ON Ban(TableDetailID)
+WHERE TableDetailID IS NOT NULL
+
+ALTER TABLE ChiTietBan
+ADD CONSTRAINT FK_ChiTietBan_Ban FOREIGN KEY (BanID) REFERENCES Ban(id),
+	CONSTRAINT FK_ChiTietBan_NhanVien FOREIGN KEY (NhanVienID) REFERENCES NhanVien(id),
+	CONSTRAINT AK_ChiTietBan UNIQUE (BanID,NhanVienID,ThoiGianDat);
+
+ALTER TABLE MonAn
+ADD CONSTRAINT FK_MonAn_Menu FOREIGN KEY (MenuID) REFERENCES Menu(id);
+
+ALTER TABLE OrderMon
+ADD CONSTRAINT FK_OrderMon_ChiTietBan FOREIGN KEY (ChiTietBanID) REFERENCES ChiTietBan(id),
+	CONSTRAINT FK_OrderMon_MonAn FOREIGN KEY (MonAnID) REFERENCES MonAn(id),
+	CONSTRAINT AK_OrderMon UNIQUE (ChiTietBanID,MonAnID,ThoiGianOrder);
+
+ALTER TABLE HoaDon
+ADD CONSTRAINT FK_HoaDon_NhanVien FOREIGN KEY (NhanVienID) REFERENCES NhanVien(id),
+	CONSTRAINT FK_HoaDon_ChiTietBan FOREIGN KEY (ChiTietBanID) REFERENCES ChiTietBan(id),
+	CONSTRAINT AK_HoaDon UNIQUE (ChiTietBanID);
+
+ALTER TABLE ThucPham
+ADD CONSTRAINT FK_ThucPham_LoaiThucPham FOREIGN KEY (LoaiThucPhamID) REFERENCES LoaiThucPham(id);
+
+ALTER TABLE PhieuKho
+ADD CONSTRAINT FK_PhieuKho_NhanVien FOREIGN KEY (NhanVienID) REFERENCES NhanVien(id);
+
+ALTER TABLE ChiTietNhapKho
+ADD CONSTRAINT FK_DetailNhap_PhieuNhap FOREIGN KEY (NhapKhoID) REFERENCES PhieuKho(id),
+	CONSTRAINT FK_DetailNhap_ThucPham FOREIGN KEY (ThucPhamID) REFERENCES ThucPham(id),
+	CONSTRAINT AK_ChiTietNhapKho UNIQUE (NhapKhoID,ThucPhamID);
+
+ALTER TABLE ChiTietXuatKho
+ADD CONSTRAINT FK_DetailXuat_PhieuXuat FOREIGN KEY (XuatKhoID) REFERENCES PhieuKho(id),
+	CONSTRAINT FK_DetailXuat_ThucPham FOREIGN KEY (ThucPhamID) REFERENCES ThucPham(id),
+	CONSTRAINT AK_ChiTietXuatKho UNIQUE (XuatKhoID,ThucPhamID);
+
+
+
+-- Add data
+--id INT IDENTITY PRIMARY KEY,
+--	ho NVARCHAR(50) NOT NULL,
+--	ten NVARCHAR(10) NOT NULL,
+--	GioiTinh INT NOT NULL DEFAULT 1, -- 1: Nam, 0: Nữ
+--	ChucVuID INT NOT NULL,
+--	Joined_date DATE NOT NULL DEFAULT GetDate()
+
+INSERT INTO ChucVu VALUES
+(
+	N'Phục vụ'
+)
+GO
+
+INSERT INTO ChucVu VALUES
+(
+	N'Kế toán'
+)
+GO
+
+INSERT INTO ChucVu VALUES
+(
+	N'Đầu bếp'
+)
+GO
+
+INSERT INTO ChucVu VALUES
+(
+	N'Giám đốc'
+)
+GO
+
+INSERT INTO ChucVu VALUES
+(
+	N'Thủ kho'
+)
+GO
+
+INSERT INTO NhanVien (ho,ten,ChucVuID) VALUES 
+(
+	N'Nguyễn Quang',
+	N'Hải',
+	3
+)
+GO
+
+INSERT INTO NhanVien (ho,ten,ChucVuID) VALUES 
+(
+	N'Nguyễn Công',
+	N'Phượng',
+	3
+)
+GO
+
+INSERT INTO NhanVien (ho,ten,ChucVuID) VALUES 
+(
+	N'Bùi Thị Cẩm',
+	N'Ly',
+	1
+)
+GO
+
+INSERT INTO NhanVien (ho,ten,ChucVuID) VALUES 
+(
+	N'Vũ Thị',
+	N'Tú',
+	2
+)
+GO
+
+INSERT INTO NhanVien (ho,ten,ChucVuID) VALUES 
+(
+	N'Nguyễn Quang',
+	N'Tùng',
+	4
+)
+GO
+
+INSERT INTO NhanVien (ho,ten,ChucVuID) VALUES 
+(
+	N'Trần Quang',
+	N'Khải',
+	5
+)
+GO
+
+-- Tao du lieu bang ban
+
+DECLARE @i int= 1
+
+WHILE @i <= 10
+BEGIN
+	INSERT INTO dbo.Ban (TenBan) VALUES (N'Bàn' + CAST(@i as NVARCHAR(10)))
+	SET @i = @i + 1
+END
+GO
+
+CREATE PROC USP_GetTableList
+AS
+	SELECT * FROM Ban
+GO
+
+-- Tao Menu
+INSERT INTO MENU VALUES (N'Nướng')
+
+INSERT INTO MENU VALUES (N'Lẩu')
+
+INSERT INTO MENU VALUES (N'Xào')
+
+INSERT INTO MENU VALUES (N'Bia')
+
+INSERT INTO MENU VALUES (N'Nước ngọt')
+
+-- Tạo món và đồ uống 
+
+INSERT INTO MonAn VALUES (
+	N'Gà nướng', 100000, 1
+)
+
+
+INSERT INTO MonAn VALUES (
+	N'Vịt cỏ nướng', 100000, 1
+)
+
+
+INSERT INTO MonAn VALUES (
+	N'Chân giò rút xương nướng', 100000, 1
+)
+
+
+INSERT INTO MonAn VALUES (
+	N'Má heo nướng', 100000, 1
+)
+
+
+INSERT INTO MonAn VALUES (
+	N'Heo nướng', 100000, 1
+)
+
+
+INSERT INTO MonAn VALUES (
+	N'Lẩu chao', 200000, 2
+)
+
+INSERT INTO MonAn VALUES (
+	N'Lẩu măng', 200000, 2
+)
+
+INSERT INTO MonAn VALUES (
+	N'Lẩu chuối xanh', 200000, 2
+)
+
+INSERT INTO MonAn VALUES (
+	N'Lòng xào măng', 80000, 3
+)
+
+INSERT INTO MonAn VALUES (
+	N'Mì xào hải sản', 80000, 3
+)
+
+INSERT INTO MonAn VALUES (
+	N'Rau muống xào tỏi', 50000, 3
+)
+
+INSERT INTO MonAn VALUES (
+	N'Đậu nhũ chiên', 50000, 3
+)
+
+INSERT INTO MonAn VALUES (
+	N'Cơm chiên dưa bò', 50000, 3
+)
+
+INSERT INTO MonAn VALUES (
+	N'Bia hơi Hà Nội', 15000, 4
+)
+
+INSERT INTO MonAn VALUES (
+	N'Bia Sài Gòn Special', 13000, 4
+)
+
+INSERT INTO MonAn VALUES (
+	N'Bia Heineken bạc', 20000, 4
+)
+
+INSERT INTO MonAn VALUES (
+	N'Cocacola', 10000, 5
+)
+
+INSERT INTO MonAn VALUES (
+	N'Pepsi', 10000, 5
+)
+
+
+-- Add column name TongTien to table HoaDon 
+ALTER TABLE HoaDon 
+ADD TongTien float NOT NULL 
+CONSTRAINT TongTien_col DEFAULT 0
+WITH VALUES
+
+
+
+
+
+
+
+
+
+
+
+
+
