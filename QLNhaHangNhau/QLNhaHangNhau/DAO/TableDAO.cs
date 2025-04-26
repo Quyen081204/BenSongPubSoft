@@ -55,5 +55,31 @@ namespace QLNhaHangNhau.DAO
 
             return affectedRow > 0;
         }
+
+        public bool CheckEmpty(Table table)
+        {
+            return table.Status == 0;
+        }
+
+        public void TableStatusReset(Table table)
+        {
+            // Update in GUI
+            table.Status = 0;
+            table.TableDetailID = null;
+            
+            // Update database
+            string query = "UPDATE BAN SET TrangThai = 0, TableDetailID = NULL WHERE id = @table_id";
+            SqlCommand cmd = new SqlCommand(query);
+            cmd.Parameters.AddWithValue("@table_id", table.Id);
+            int rowAffected = DataProvider.Instance.ExecuteNonQuery(cmd);
+            if (rowAffected > 0)
+            {
+                Console.WriteLine("== Reset table successfully");
+            }
+            else
+            {
+                Console.WriteLine("== Reset table fail");
+            }
+        }
     }
 }

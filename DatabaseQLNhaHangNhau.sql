@@ -136,6 +136,18 @@ CREATE TABLE ChiTietXuatKho
 )
 GO
 
+-- Tao bang luu thong tin thanh toan cua MoMo
+-- STATUS (pending, cancel, success)
+CREATE TABLE Payments (
+	id INT IDENTITY PRIMARY KEY,
+	request_id VARCHAR(40) NOT NULL,
+	order_id VARCHAR(40) NOT NULL,
+	amount INT NOT NULL DEFAULT 0,
+	status VARCHAR(20) NOT NULL DEFAULT 'PENDING',
+	created_at DATETIME NOT NULL DEFAULT GetDate(),
+	updated_at DATETIME NULL,
+	hoaDonID INT FOREIGN KEY REFERENCES HoaDon(id) NOT NULL
+)
 -- Them khoa ngoai va them unique constraint
 
 ALTER TABLE Account
@@ -391,7 +403,16 @@ ADD TongTien float NOT NULL
 CONSTRAINT TongTien_col DEFAULT 0
 WITH VALUES
 
+-- Add column name Discount to table HoaDon
+ALTER TABLE HoaDon 
+ADD Discount INT NOT NULL 
+CONSTRAINT Discount_col DEFAULT 0
+WITH VALUES
 
+ALTER TABLE HoaDon 
+ADD Status BIT NOT NULL 
+CONSTRAINT Status_col DEFAULT 0
+WITH VALUES
 
 
 

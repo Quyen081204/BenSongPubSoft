@@ -63,7 +63,7 @@ SELECT ChiTietBanID, TenMonAn
 FROM OrderMon, ChiTietBan, MonAn 
 WHERE OrderMon.ChiTietBanID = ChiTietBan.id AND OrderMon.MonAnID = MonAn.id AND ChiTietBanID = 10
 
-
+SELECT * FROM OrderMon WHERE ChiTietBanID = 11
 
 DELETE OrderMon WHERE ChiTietBanID = 10 and MonAnID = 15
 

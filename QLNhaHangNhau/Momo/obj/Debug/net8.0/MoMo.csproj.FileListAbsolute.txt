@@ -1,0 +1,12 @@
+F:\QuanLyNhaHangNhau\QLNhaHangNhau\Momo\bin\Debug\net8.0\MoMo.deps.json
+F:\QuanLyNhaHangNhau\QLNhaHangNhau\Momo\bin\Debug\net8.0\MoMo.dll
+F:\QuanLyNhaHangNhau\QLNhaHangNhau\Momo\bin\Debug\net8.0\MoMo.pdb
+F:\QuanLyNhaHangNhau\QLNhaHangNhau\Momo\obj\Debug\net8.0\MoMo.GeneratedMSBuildEditorConfig.editorconfig
+F:\QuanLyNhaHangNhau\QLNhaHangNhau\Momo\obj\Debug\net8.0\MoMo.AssemblyInfoInputs.cache
+F:\QuanLyNhaHangNhau\QLNhaHangNhau\Momo\obj\Debug\net8.0\MoMo.AssemblyInfo.cs
+F:\QuanLyNhaHangNhau\QLNhaHangNhau\Momo\obj\Debug\net8.0\MoMo.csproj.CoreCompileInputs.cache
+F:\QuanLyNhaHangNhau\QLNhaHangNhau\Momo\obj\Debug\net8.0\MoMo.sourcelink.json
+F:\QuanLyNhaHangNhau\QLNhaHangNhau\Momo\obj\Debug\net8.0\MoMo.dll
+F:\QuanLyNhaHangNhau\QLNhaHangNhau\Momo\obj\Debug\net8.0\refint\MoMo.dll
+F:\QuanLyNhaHangNhau\QLNhaHangNhau\Momo\obj\Debug\net8.0\MoMo.pdb
+F:\QuanLyNhaHangNhau\QLNhaHangNhau\Momo\obj\Debug\net8.0\ref\MoMo.dll

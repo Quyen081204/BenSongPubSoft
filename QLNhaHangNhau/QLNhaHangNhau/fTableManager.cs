@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using QLNhaHangNhau.DAO;
 using QLNhaHangNhau.DTO;
+using System.Text.RegularExpressions;
 
 namespace QLNhaHangNhau
 {
@@ -20,8 +21,10 @@ namespace QLNhaHangNhau
         private Color vacantColor = Color.AliceBlue;
         private Color focusColor = SystemColors.ControlLight;
         private Color fullColor = Color.Orange;
-
         private Button? prevButton = null;
+        // Hien thi vn dong
+        CultureInfo culture = new CultureInfo("vi-VN");
+
         public fTableManager()
         {
             InitializeComponent();
@@ -165,8 +168,19 @@ namespace QLNhaHangNhau
 
         private void table_clicked(object sender, EventArgs e)
         {
+            // Reset
+            txbTotalPrice.Text = "0";
+            btnAddFood.Tag = null;
+            btnReduceFood.Tag = null;
+            btnCheckOutCash.Tag = null;
+            btnCheckOutMomo.Tag = null;
+
+            numAddFood.Value = numAddFood.Minimum;
+            numDiscount.Value = numDiscount.Minimum;
+
             Button btn = sender as Button;
             Table table_clicked = null;
+
 
             // Doi lai mau cho nut vua bam
             if (prevButton != null)
@@ -186,6 +200,16 @@ namespace QLNhaHangNhau
             // Hien thi Form dat ban cho khach
             if (table_clicked != null && table_clicked.Status == 0) // Ban con trong
             {
+                // Disable button that need customer
+                btnAddFood.Enabled = false;
+                btnReduceFood.Enabled = false;
+                numDiscount.Enabled = false;
+                btnSwitchTable.Enabled = false;
+                btnCheckOutCash.Enabled = false;
+                btnCheckOutMomo.Enabled = false;
+                numAddFood.Enabled = false;
+                btnDiscount.Enabled = false;
+
                 // Temporarily remove receipt
                 pnlInfoTable.Controls.Remove(lstReceipt);
                 ReserveTable(btn, table_clicked);
@@ -194,11 +218,27 @@ namespace QLNhaHangNhau
             // Ban da co khach
             if (table_clicked.Status == 1)
             {
+                // Enable button
+                // Disable button that need customer
+                btnAddFood.Enabled = true;
+                btnReduceFood.Enabled = true;
+                numDiscount.Enabled = true;
+                btnSwitchTable.Enabled = true;
+                btnCheckOutCash.Enabled = true;
+                btnCheckOutMomo.Enabled = true;
+                numAddFood.Enabled = true;
+                btnDiscount.Enabled = true;
+
                 pnlInfoTable.Controls.Remove(fReserverTable);
                 pnlInfoTable.Controls.Add(lstReceipt);
+
                 // When adding food we know which table has ordered food
                 btnAddFood.Tag = table_clicked;
                 btnReduceFood.Tag = table_clicked;
+
+                // When checkout we know which table need checkout
+                btnCheckOutCash.Tag = table_clicked;
+                btnCheckOutMomo.Tag = table_clicked;
 
                 ShowOrderList(table_clicked.TableDetailID);
             }
@@ -231,6 +271,8 @@ namespace QLNhaHangNhau
                     // Neu them mon thanh cong thi reload lai danh sach mon
                     if (rowAffected > 0)
                     {
+                        // Reset value numAddFood
+                        numAddFood.Value = numAddFood.Minimum;
                         ShowOrderList(table_clicked.TableDetailID);
                     }
                 }
@@ -267,6 +309,8 @@ namespace QLNhaHangNhau
                             int rowAffected = OrderDetailDAO.GetInstance().RemoveFoodFromTable((int)table_clicked.TableDetailID, food.ID);
                             if (rowAffected > 0)
                             {
+                                // Reset value of numAddFood
+                                numAddFood.Value = numAddFood.Minimum;
                                 ShowOrderList(table_clicked.TableDetailID);
                             }
                             return;
@@ -280,6 +324,8 @@ namespace QLNhaHangNhau
                     int rowAffected = OrderDetailDAO.GetInstance().ReduceFoodForTableByID((int)table_clicked.TableDetailID, food.ID, sl);
                     if (rowAffected > 0)
                     {
+                        // Reset value of numAddFood
+                        numAddFood.Value = numAddFood.Minimum;
                         ShowOrderList(table_clicked.TableDetailID);
                     }
                 }
@@ -290,7 +336,165 @@ namespace QLNhaHangNhau
             }
         }
 
+        private void btnDiscount_Click(object sender, EventArgs e)
+        {
+            if (prevButton != null)
+            {
+                double percent_discount = (int)numDiscount.Value / 100.0;
+
+                int total_price_before_discount = int.Parse(Regex.Replace(txbTotalPrice.Text, @"[^\d]", ""));
+                double total_price_after_discount = total_price_before_discount * (1 - percent_discount);
+
+                txbTotalPrice.Text = total_price_after_discount.ToString("c", culture);
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng chọn bàn !!!", "Thông báo");
+            }
+        }
+
+        private void btnCheckOutCash_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine("== cash cash ==");
+            // Neu chua co ban nao duoc chon
+
+            if (prevButton == null)
+            {
+                MessageBox.Show("Chưa có bàn được chọn !!!", "Thông báo");
+                return;
+            }
+
+            Button btnCheckOutCash = sender as Button;
+            Table table_clicked = null;
+
+            if (btnCheckOutCash != null && btnCheckOutCash.Tag is Table)
+            {
+                table_clicked = (Table)btnCheckOutCash.Tag;
+            }
+
+            if (table_clicked != null)
+            {
+                // Ban da co nguoi nhung chua order gi
+                if (Regex.Replace(txbTotalPrice.Text, @"[^\d]", "") == "0")
+                {
+                    MessageBox.Show("Bàn chưa có order đồ ăn", "Thông báo");
+                }
+                else
+                {
+                    // Tinh toan discount gia lap nut discount bam
+                    btnDiscount.PerformClick();
+
+                    // Hop le tien hanh tao hoa don va thanh toan
+                    int total_price = int.Parse(Regex.Replace(txbTotalPrice.Text, @"[^\d]", ""));
+                    int status = 1; // Success
+                    string payment_method = "CASH";
+                    Bill bill = new Bill(CurrentUser.Employee.Id, (int)table_clicked.TableDetailID, (int)numDiscount.Value, payment_method, total_price, status);
+                    // Tao hoa don
+                    int rowAffected = BillDAO.GetInstance().CreateBillCash(bill);
+                    if (rowAffected > 0)
+                    {
+                        // Cap nhat trang thai ban
+                        TableDAO.Instance.TableStatusReset(table_clicked);
+
+                        // Cap nhat trang thai btn cho ban vua thanh toan
+                        prevButton.Text = string.Empty;
+                        prevButton.Text = table_clicked.Name + Environment.NewLine;
+                        prevButton.Text += "Trống" + Environment.NewLine;
+                        prevButton.Text += $"SL {table_clicked.Capacity}";
+
+                        // Cap nhat ListView
+                        lstReceipt.Items.Clear();
+
+                        // Cap nhat num discount
+                        numDiscount.Value = numDiscount.Minimum;
+
+                        MessageBox.Show($"Thanh toán thành công {txbTotalPrice.Text}", "Thông báo");
+
+                        // Reset txbTotalPrice
+                        txbTotalPrice.Text = "0";
+                    }
+                    else
+                    {
+                        MessageBox.Show("Thanh toán thất bại", "Thông báo");
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Bàn còn trống !!!", "Thông báo");
+            }
+
+        }
+
+        private void btnCheckOutMomo_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine("== momo momo ==");
+            // Neu chua co ban nao duoc chon
+
+            if (prevButton == null)
+            {
+                MessageBox.Show("Chưa có bàn được chọn !!!", "Thông báo");
+                return;
+            }
+
+            Button btnCheckOutMomo = sender as Button;
+            Table table_clicked = null;
+
+            if (btnCheckOutMomo != null && btnCheckOutMomo.Tag is Table)
+            {
+                table_clicked = (Table)btnCheckOutMomo.Tag;
+            }
+
+            if (table_clicked != null)
+            {
+                // Ban da co nguoi nhung chua order gi
+                if (Regex.Replace(txbTotalPrice.Text, @"[^\d]", "") == "0")
+                {
+                    MessageBox.Show("Bàn chưa có order đồ ăn", "Thông báo");
+                }
+                else 
+                {
+                    // Tinh toan discount gia lap nut discount bam
+                    btnDiscount.PerformClick();
+
+                    // Hop le tien hanh tao hoa don va thanh toan
+                    int total_price = int.Parse(Regex.Replace(txbTotalPrice.Text, @"[^\d]", ""));
+
+                    Payment pay_bill = new Payment();
+                    pay_bill.amount = total_price;
+
+                    //Goi api toi momo
+                    Bitmap qrCodeImage = PaymentDAO.GetInstance().ProcessPayment(pay_bill);
+
+                    if (qrCodeImage != null)
+                    {
+                        // Hien thi ma qrcode
+                        fQRCode fQRCode = new fQRCode(qrCodeImage);
+                        fQRCode.ShowDialog();
+                    }
+                    else
+                    {
+                        Console.WriteLine("Da co loi xay ra khi tao qr code");
+                    }
+
+
+
+                }
+
+            }
+            else
+            {
+               
+            }
+
+            
+        }
         #endregion
+
+
+
+
+
     }
 
 }

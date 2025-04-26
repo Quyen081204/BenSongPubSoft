@@ -19,7 +19,6 @@ namespace QLNhaHangNhau
         public Table Table_reserve { get; set; }
         private bool valid_name = false;
         private bool valid_phone = false;
-
         public fReserverTable()
         {
             InitializeComponent();
@@ -139,13 +138,16 @@ namespace QLNhaHangNhau
                 Button btn = tupleControls.Item2;
                 ListView lstReceipt = tupleControls.Item3;
 
-                pnlInfoTable.Controls.Remove(this);
+                //pnlInfoTable.Controls.Remove(this);
                 lstReceipt.Items.Clear();
-                pnlInfoTable.Controls.Add(lstReceipt);
+                //pnlInfoTable.Controls.Add(lstReceipt);
                 btn.Text = "";
                 btn.Text = Table_reserve.Name + Environment.NewLine;
                 btn.Text += "Có khách";
                // btn.BackColor = Color.Orange;
+
+                // Cap nhat lại là bàn đã có người
+                btn.PerformClick();
             }
             else
             {

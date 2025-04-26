@@ -28,11 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            menuStrip1 = new MenuStrip();
-            adminToolStripMenuItem = new ToolStripMenuItem();
-            thôngTinTàiKhoảnToolStripMenuItem = new ToolStripMenuItem();
-            thôngTinCáNhânToolStripMenuItem = new ToolStripMenuItem();
-            đăngXuấtToolStripMenuItem = new ToolStripMenuItem();
             pnlInfoTable = new Panel();
             lstReceipt = new ListView();
             columnHeader1 = new ColumnHeader();
@@ -46,56 +41,26 @@
             cbFood = new ComboBox();
             cbMenu = new ComboBox();
             panel4 = new Panel();
+            btnCheckOutCash = new Button();
+            btnCheckOutMomo = new Button();
             txbTotalPrice = new TextBox();
             cbSwitchTable = new ComboBox();
             btnSwitchTable = new Button();
             numDiscount = new NumericUpDown();
             btnDiscount = new Button();
-            btnCheckOut = new Button();
             fpnTable = new FlowLayoutPanel();
-            menuStrip1.SuspendLayout();
+            adminToolStripMenuItem = new ToolStripMenuItem();
+            thôngTinTàiKhoảnToolStripMenuItem = new ToolStripMenuItem();
+            thôngTinCáNhânToolStripMenuItem = new ToolStripMenuItem();
+            đăngXuấtToolStripMenuItem = new ToolStripMenuItem();
+            menuStrip1 = new MenuStrip();
             pnlInfoTable.SuspendLayout();
             panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numAddFood).BeginInit();
             panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numDiscount).BeginInit();
+            menuStrip1.SuspendLayout();
             SuspendLayout();
-            // 
-            // menuStrip1
-            // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { adminToolStripMenuItem, thôngTinTàiKhoảnToolStripMenuItem });
-            menuStrip1.Location = new Point(0, 0);
-            menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(715, 24);
-            menuStrip1.TabIndex = 0;
-            menuStrip1.Text = "menuStrip1";
-            // 
-            // adminToolStripMenuItem
-            // 
-            adminToolStripMenuItem.Name = "adminToolStripMenuItem";
-            adminToolStripMenuItem.Size = new Size(55, 20);
-            adminToolStripMenuItem.Text = "Admin";
-            adminToolStripMenuItem.Click += adminToolStripMenuItem_Click;
-            // 
-            // thôngTinTàiKhoảnToolStripMenuItem
-            // 
-            thôngTinTàiKhoảnToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { thôngTinCáNhânToolStripMenuItem, đăngXuấtToolStripMenuItem });
-            thôngTinTàiKhoảnToolStripMenuItem.Name = "thôngTinTàiKhoảnToolStripMenuItem";
-            thôngTinTàiKhoảnToolStripMenuItem.Size = new Size(122, 20);
-            thôngTinTàiKhoảnToolStripMenuItem.Text = "Thông tin tài khoản";
-            // 
-            // thôngTinCáNhânToolStripMenuItem
-            // 
-            thôngTinCáNhânToolStripMenuItem.Name = "thôngTinCáNhânToolStripMenuItem";
-            thôngTinCáNhânToolStripMenuItem.Size = new Size(170, 22);
-            thôngTinCáNhânToolStripMenuItem.Text = "Thông tin cá nhân";
-            thôngTinCáNhânToolStripMenuItem.Click += thôngTinCáNhânToolStripMenuItem_Click;
-            // 
-            // đăngXuấtToolStripMenuItem
-            // 
-            đăngXuấtToolStripMenuItem.Name = "đăngXuấtToolStripMenuItem";
-            đăngXuấtToolStripMenuItem.Size = new Size(170, 22);
-            đăngXuấtToolStripMenuItem.Text = "Đăng xuất";
             // 
             // pnlInfoTable
             // 
@@ -162,6 +127,7 @@
             // numAddFood
             // 
             numAddFood.Location = new Point(314, 23);
+            numAddFood.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numAddFood.Name = "numAddFood";
             numAddFood.Size = new Size(44, 23);
             numAddFood.TabIndex = 3;
@@ -196,16 +162,37 @@
             // 
             // panel4
             // 
+            panel4.Controls.Add(btnCheckOutCash);
+            panel4.Controls.Add(btnCheckOutMomo);
             panel4.Controls.Add(txbTotalPrice);
             panel4.Controls.Add(cbSwitchTable);
             panel4.Controls.Add(btnSwitchTable);
             panel4.Controls.Add(numDiscount);
             panel4.Controls.Add(btnDiscount);
-            panel4.Controls.Add(btnCheckOut);
             panel4.Location = new Point(342, 397);
             panel4.Name = "panel4";
             panel4.Size = new Size(361, 82);
             panel4.TabIndex = 4;
+            // 
+            // btnCheckOutCash
+            // 
+            btnCheckOutCash.Location = new Point(288, 56);
+            btnCheckOutCash.Name = "btnCheckOutCash";
+            btnCheckOutCash.Size = new Size(70, 23);
+            btnCheckOutCash.TabIndex = 10;
+            btnCheckOutCash.Text = "Cash";
+            btnCheckOutCash.UseVisualStyleBackColor = true;
+            btnCheckOutCash.Click += btnCheckOutCash_Click;
+            // 
+            // btnCheckOutMomo
+            // 
+            btnCheckOutMomo.Location = new Point(204, 56);
+            btnCheckOutMomo.Name = "btnCheckOutMomo";
+            btnCheckOutMomo.Size = new Size(70, 23);
+            btnCheckOutMomo.TabIndex = 9;
+            btnCheckOutMomo.Text = "Momo";
+            btnCheckOutMomo.UseVisualStyleBackColor = true;
+            btnCheckOutMomo.Click += btnCheckOutMomo_Click;
             // 
             // txbTotalPrice
             // 
@@ -251,15 +238,7 @@
             btnDiscount.TabIndex = 5;
             btnDiscount.Text = "Giảm giá";
             btnDiscount.UseVisualStyleBackColor = true;
-            // 
-            // btnCheckOut
-            // 
-            btnCheckOut.Location = new Point(204, 53);
-            btnCheckOut.Name = "btnCheckOut";
-            btnCheckOut.Size = new Size(154, 27);
-            btnCheckOut.TabIndex = 4;
-            btnCheckOut.Text = "Thanh toán";
-            btnCheckOut.UseVisualStyleBackColor = true;
+            btnDiscount.Click += btnDiscount_Click;
             // 
             // fpnTable
             // 
@@ -268,6 +247,42 @@
             fpnTable.Name = "fpnTable";
             fpnTable.Size = new Size(336, 452);
             fpnTable.TabIndex = 0;
+            // 
+            // adminToolStripMenuItem
+            // 
+            adminToolStripMenuItem.Name = "adminToolStripMenuItem";
+            adminToolStripMenuItem.Size = new Size(55, 20);
+            adminToolStripMenuItem.Text = "Admin";
+            adminToolStripMenuItem.Click += adminToolStripMenuItem_Click;
+            // 
+            // thôngTinTàiKhoảnToolStripMenuItem
+            // 
+            thôngTinTàiKhoảnToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { thôngTinCáNhânToolStripMenuItem, đăngXuấtToolStripMenuItem });
+            thôngTinTàiKhoảnToolStripMenuItem.Name = "thôngTinTàiKhoảnToolStripMenuItem";
+            thôngTinTàiKhoảnToolStripMenuItem.Size = new Size(122, 20);
+            thôngTinTàiKhoảnToolStripMenuItem.Text = "Thông tin tài khoản";
+            // 
+            // thôngTinCáNhânToolStripMenuItem
+            // 
+            thôngTinCáNhânToolStripMenuItem.Name = "thôngTinCáNhânToolStripMenuItem";
+            thôngTinCáNhânToolStripMenuItem.Size = new Size(170, 22);
+            thôngTinCáNhânToolStripMenuItem.Text = "Thông tin cá nhân";
+            thôngTinCáNhânToolStripMenuItem.Click += thôngTinCáNhânToolStripMenuItem_Click;
+            // 
+            // đăngXuấtToolStripMenuItem
+            // 
+            đăngXuấtToolStripMenuItem.Name = "đăngXuấtToolStripMenuItem";
+            đăngXuấtToolStripMenuItem.Size = new Size(170, 22);
+            đăngXuấtToolStripMenuItem.Text = "Đăng xuất";
+            // 
+            // menuStrip1
+            // 
+            menuStrip1.Items.AddRange(new ToolStripItem[] { adminToolStripMenuItem, thôngTinTàiKhoảnToolStripMenuItem });
+            menuStrip1.Location = new Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new Size(715, 24);
+            menuStrip1.TabIndex = 0;
+            menuStrip1.Text = "menuStrip1";
             // 
             // fTableManager
             // 
@@ -283,25 +298,19 @@
             Name = "fTableManager";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Phần mềm quản lý nhà hàng nhậu Bên Sông";
-            menuStrip1.ResumeLayout(false);
-            menuStrip1.PerformLayout();
             pnlInfoTable.ResumeLayout(false);
             panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)numAddFood).EndInit();
             panel4.ResumeLayout(false);
             panel4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numDiscount).EndInit();
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-
-        private MenuStrip menuStrip1;
-        private ToolStripMenuItem adminToolStripMenuItem;
-        private ToolStripMenuItem thôngTinTàiKhoảnToolStripMenuItem;
-        private ToolStripMenuItem thôngTinCáNhânToolStripMenuItem;
-        private ToolStripMenuItem đăngXuấtToolStripMenuItem;
         private Panel pnlInfoTable;
         private ListView lstReceipt;
         private Panel panel3;
@@ -313,7 +322,6 @@
         private NumericUpDown numAddFood;
         private NumericUpDown numDiscount;
         private Button btnDiscount;
-        private Button btnCheckOut;
         private Button btnSwitchTable;
         private ComboBox cbSwitchTable;
         private ColumnHeader columnHeader1;
@@ -322,5 +330,12 @@
         private ColumnHeader columnHeader4;
         private TextBox txbTotalPrice;
         private Button btnReduceFood;
+        private Button btnCheckOutCash;
+        private Button btnCheckOutMomo;
+        private ToolStripMenuItem adminToolStripMenuItem;
+        private ToolStripMenuItem thôngTinTàiKhoảnToolStripMenuItem;
+        private ToolStripMenuItem thôngTinCáNhânToolStripMenuItem;
+        private ToolStripMenuItem đăngXuấtToolStripMenuItem;
+        private MenuStrip menuStrip1;
     }
 }
