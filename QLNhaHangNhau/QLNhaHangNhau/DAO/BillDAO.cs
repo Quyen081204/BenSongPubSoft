@@ -47,6 +47,33 @@ namespace QLNhaHangNhau.DAO
             return rowAffected;
         }
 
+        public int CreateBillOnline(Bill bill)
+        {
+            string query = """
+                INSERT INTO HoaDon (NhanVienID, ChiTietBanID, PTThanhToan, TongTien, Discount, Status)
+                OUTPUT INSERTED.id
+                VALUES (@nhanvien_id,@tabledetail_id,@payment_method,@total_price,@discount,@status)   
+                """;
+            SqlCommand cmd = new SqlCommand(query);
+            cmd.Parameters.AddWithValue("@nhanvien_id", bill.EmployeeID);
+            cmd.Parameters.AddWithValue("@tabledetail_id", bill.TableDetailID);
+            cmd.Parameters.AddWithValue("@payment_method", bill.PaymentMethod);
+            cmd.Parameters.AddWithValue("@total_price", bill.Total_price);
+            cmd.Parameters.AddWithValue("@discount", bill.Discount);
+            cmd.Parameters.AddWithValue("@status", bill.Status);
+
+            int rowAffected = (int)DataProvider.Instance.ExecuteScalar(cmd);
+            if (rowAffected > 0)
+            {
+                Console.WriteLine("== Insert bill online successfully");
+            }
+            else
+            {
+                Console.WriteLine("== Insert bill online fail");
+            }
+            return rowAffected;
+        }
+
 
     }
 }

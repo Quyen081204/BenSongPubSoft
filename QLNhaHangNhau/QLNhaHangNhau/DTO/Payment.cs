@@ -19,7 +19,7 @@ namespace QLNhaHangNhau.DTO
         public string lang { get; set; }
         public string partnerCode { get; set; }
         public string Status { get; set; }
-
+        public DateTime UpdateAt { get; set; }
         public int BillID { get; set; }
 
         public Payment()

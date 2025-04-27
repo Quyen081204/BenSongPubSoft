@@ -10,12 +10,20 @@ using Momo;
 using QLNhaHangNhau.DTO;
 using QRCoder;
 using Newtonsoft.Json;
+using System.Text.Json;
+
 
 namespace QLNhaHangNhau.DAO
 {
+    public class PaymentResponse
+    {
+        public int resultCode { get; set; }
+        public bool status { get; set; }
+    }
     public class PaymentDAO
     {
         private static PaymentDAO instace;
+        private string baseBackEndUrl = "https://04c4-171-252-188-57.ngrok-free.app";
         public static PaymentDAO GetInstance()
         {
             if (instace == null)
@@ -32,9 +40,9 @@ namespace QLNhaHangNhau.DAO
         public int CreatePayment(Payment payment)
         {
             string query = """
-                    INSERT INTO Payments (request_id, order_id, amount, status, hoaDonID)
+                    INSERT INTO Payments (request_id, order_id, amount, status, updated_at, hoaDonID)
                     VALUES ( 
-                                @request_id, @order_id, @amount, @status, @hoaDonID
+                                @request_id, @order_id, @amount, @status, @updated_at ,@hoaDonID
                            )
                 """;
             SqlCommand cmd = new SqlCommand(query);
@@ -42,16 +50,17 @@ namespace QLNhaHangNhau.DAO
             cmd.Parameters.AddWithValue("@order_id", payment.orderId);
             cmd.Parameters.AddWithValue("@amount", payment.amount);
             cmd.Parameters.AddWithValue("@status", payment.Status);
+            cmd.Parameters.AddWithValue("@updated_at", payment.UpdateAt);
             cmd.Parameters.AddWithValue("@hoaDonID", payment.BillID);
 
             int rowAffected = DataProvider.Instance.ExecuteNonQuery(cmd);
             if (rowAffected > 0)
             {
-                Console.WriteLine("== Insert bill successfully");
+                Console.WriteLine("== Insert payment successfully");
             }
             else
             {
-                Console.WriteLine("== Insert bill fail");
+                Console.WriteLine("== Insert payment fail");
             }
             return rowAffected;
         }
@@ -60,7 +69,7 @@ namespace QLNhaHangNhau.DAO
         public Bitmap ProcessPayment(Payment payment)
         {
             //request params need to request to MoMo system
-            string baseBackEndUrl = "https://6715-171-252-188-57.ngrok-free.app";
+            
             
             string endpoint = "https://test-payment.momo.vn/v2/gateway/api/create";
             string partnerCode = "MOMO";//"MOMO5RGX20191128";
@@ -162,15 +171,13 @@ namespace QLNhaHangNhau.DAO
 
         }
 
-        public async Task SendPostRequest(Payment payment)
+        public async Task<PaymentResponse> SendPostRequest(string orderId)
         {
-            await Task.Delay(15000);  // 15000 ms = 15s
-
             using (HttpClient client = new HttpClient())
             {
                 var data = new
                 {
-                    order_id = payment.orderId
+                    order_id = orderId
                 };
 
                 string json = JsonConvert.SerializeObject(data);
@@ -179,12 +186,45 @@ namespace QLNhaHangNhau.DAO
 
                 StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                HttpResponseMessage response = await client.PostAsync("https://81c2-14-241-246-77.ngrok-free.app/api/checkOrderStatus/", content);
-                string result = await response.Content.ReadAsStringAsync();
+                HttpResponseMessage response = await client.PostAsync($"{baseBackEndUrl}/api/checkOrderStatus/", content);
+                string responseFromBackEnd = await response.Content.ReadAsStringAsync();
+                
+                Console.WriteLine("--- Response from backend: " + responseFromBackEnd);
 
-                Console.WriteLine(result);
+                PaymentResponse paymentResponse = System.Text.Json.JsonSerializer.Deserialize<PaymentResponse>(responseFromBackEnd);
+                
+
+                return paymentResponse;
             }
         }
 
+        public async Task<bool> CheckPayment(string orderId)
+        {
+            // Each 5s send a polling check payment to check status of payment
+            bool flag = false;
+            int attempt = 0;
+
+            while(!flag)
+            {
+                // JsonResponse({"resultCode": order.result_code, "status":order.status})
+                PaymentResponse paymentResponse = await SendPostRequest(orderId);
+
+                if (paymentResponse != null && paymentResponse.status == true)
+                {
+                    // The customer has paid the bill
+                    return true;
+                }
+                
+                await Task.Delay(5000);
+                attempt++;
+                if (attempt == 24) // 2 minutes has ellapse
+                {
+                    flag = true;
+                }
+            }
+
+            // Something goes wrong
+            return false;
+        }
     }
 }

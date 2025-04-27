@@ -346,6 +346,8 @@ namespace QLNhaHangNhau
                 double total_price_after_discount = total_price_before_discount * (1 - percent_discount);
 
                 txbTotalPrice.Text = total_price_after_discount.ToString("c", culture);
+                // reset
+                numDiscount.Value = numDiscount.Minimum;
             }
             else
             {
@@ -382,13 +384,14 @@ namespace QLNhaHangNhau
                 else
                 {
                     // Tinh toan discount gia lap nut discount bam
+                    int discount = (int)numDiscount.Value;
                     btnDiscount.PerformClick();
 
                     // Hop le tien hanh tao hoa don va thanh toan
                     int total_price = int.Parse(Regex.Replace(txbTotalPrice.Text, @"[^\d]", ""));
                     int status = 1; // Success
                     string payment_method = "CASH";
-                    Bill bill = new Bill(CurrentUser.Employee.Id, (int)table_clicked.TableDetailID, (int)numDiscount.Value, payment_method, total_price, status);
+                    Bill bill = new Bill(CurrentUser.Employee.Id, (int)table_clicked.TableDetailID, discount , payment_method, total_price, status);
                     // Tao hoa don
                     int rowAffected = BillDAO.GetInstance().CreateBillCash(bill);
                     if (rowAffected > 0)
@@ -426,7 +429,7 @@ namespace QLNhaHangNhau
 
         }
 
-        private void btnCheckOutMomo_Click(object sender, EventArgs e)
+        private async void btnCheckOutMomo_Click(object sender, EventArgs e)
         {
             Console.WriteLine("== momo momo ==");
             // Neu chua co ban nao duoc chon
@@ -455,6 +458,7 @@ namespace QLNhaHangNhau
                 else 
                 {
                     // Tinh toan discount gia lap nut discount bam
+                    int discount = (int)numDiscount.Value;
                     btnDiscount.PerformClick();
 
                     // Hop le tien hanh tao hoa don va thanh toan
@@ -470,17 +474,71 @@ namespace QLNhaHangNhau
                     {
                         // Hien thi ma qrcode
                         fQRCode fQRCode = new fQRCode(qrCodeImage);
-                        fQRCode.ShowDialog();
+                        fQRCode.Show();
+
+                        // Delay 1p30s de ng dung thanh toan
+                        await Task.Delay(15000);
+
+                        fQRCode.Close();
+
+                        await Task.Delay(5000);
+                        // Kiem tra thanh toan trong 2 phut -> lien tuc gui request toi api back end 
+                        bool isPaid = await PaymentDAO.GetInstance().CheckPayment(pay_bill.orderId);
+
+                        if (isPaid == true)
+                        {
+                            // Thanh toan thanh cong
+                            // Luu bill
+
+                            int status = 1; // Success
+                            string payment_method = "MOMO";
+                            Bill bill = new Bill(CurrentUser.Employee.Id, (int)table_clicked.TableDetailID, discount, payment_method, total_price, status);
+                            // Tao hoa don
+                            int billIDInserted = BillDAO.GetInstance().CreateBillOnline(bill);
+
+                            // Luu payment
+                            pay_bill.BillID = billIDInserted;
+                            pay_bill.Status = "PAID";
+                            pay_bill.UpdateAt = DateTime.Now;
+                            int rowPaymentAffected = PaymentDAO.GetInstance().CreatePayment(pay_bill);
+
+                            if (billIDInserted > 0 && rowPaymentAffected > 0)
+                            {
+                                // Cap nhat trang thai ban
+                                TableDAO.Instance.TableStatusReset(table_clicked);
+
+                                // Cap nhat trang thai btn cho ban vua thanh toan
+                                prevButton.Text = string.Empty;
+                                prevButton.Text = table_clicked.Name + Environment.NewLine;
+                                prevButton.Text += "Trống" + Environment.NewLine;
+                                prevButton.Text += $"SL {table_clicked.Capacity}";
+
+                                // Cap nhat ListView
+                                lstReceipt.Items.Clear();
+
+                                // Cap nhat num discount
+                                numDiscount.Value = numDiscount.Minimum;
+
+                                MessageBox.Show($"Thanh toán thành công {txbTotalPrice.Text}", "Thông báo");
+
+                                // Reset txbTotalPrice
+                                txbTotalPrice.Text = "0";
+                            }
+                            else
+                            {
+                                MessageBox.Show("Thanh toán thất bại", "Thông báo");
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show($"Thanh toán hóa đơn {table_clicked.Name} thất bại !!!", "Thông báo");
+                        }
                     }
                     else
                     {
                         Console.WriteLine("Da co loi xay ra khi tao qr code");
                     }
-
-
-
                 }
-
             }
             else
             {
@@ -490,11 +548,6 @@ namespace QLNhaHangNhau
             
         }
         #endregion
-
-
-
-
-
     }
 
 }

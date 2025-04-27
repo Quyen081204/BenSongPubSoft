@@ -202,7 +202,8 @@ ADD CONSTRAINT FK_DetailXuat_PhieuXuat FOREIGN KEY (XuatKhoID) REFERENCES PhieuK
 	CONSTRAINT FK_DetailXuat_ThucPham FOREIGN KEY (ThucPhamID) REFERENCES ThucPham(id),
 	CONSTRAINT AK_ChiTietXuatKho UNIQUE (XuatKhoID,ThucPhamID);
 
-
+ALTER TABLE ChiTietBan
+ALTER COLUMN TenKhach nvarchar(50)
 
 -- Add data
 --id INT IDENTITY PRIMARY KEY,

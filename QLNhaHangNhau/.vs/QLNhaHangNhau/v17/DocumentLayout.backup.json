@@ -3,22 +3,6 @@
   "WorkspaceRootPath": "F:\\QuanLyNhaHangNhau\\QLNhaHangNhau\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{590C0B16-0864-48D0-B560-0CC3E64E7B69}|QLNhaHangNhau\\QLNhaHangNhau.csproj|f:\\quanlynhahangnhau\\qlnhahangnhau\\qlnhahangnhau\\fqrcode.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{590C0B16-0864-48D0-B560-0CC3E64E7B69}|QLNhaHangNhau\\QLNhaHangNhau.csproj|solutionrelative:qlnhahangnhau\\fqrcode.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{75354A86-82D0-4BEA-862C-C4F857E6A265}|Momo\\MoMo.csproj|f:\\quanlynhahangnhau\\qlnhahangnhau\\momo\\momo.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{75354A86-82D0-4BEA-862C-C4F857E6A265}|Momo\\MoMo.csproj|solutionrelative:momo\\momo.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{590C0B16-0864-48D0-B560-0CC3E64E7B69}|QLNhaHangNhau\\QLNhaHangNhau.csproj|f:\\quanlynhahangnhau\\qlnhahangnhau\\qlnhahangnhau\\fqrcode.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{590C0B16-0864-48D0-B560-0CC3E64E7B69}|QLNhaHangNhau\\QLNhaHangNhau.csproj|solutionrelative:qlnhahangnhau\\fqrcode.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{590C0B16-0864-48D0-B560-0CC3E64E7B69}|QLNhaHangNhau\\QLNhaHangNhau.csproj|f:\\quanlynhahangnhau\\qlnhahangnhau\\qlnhahangnhau\\fqrcode.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{590C0B16-0864-48D0-B560-0CC3E64E7B69}|QLNhaHangNhau\\QLNhaHangNhau.csproj|solutionrelative:qlnhahangnhau\\fqrcode.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{590C0B16-0864-48D0-B560-0CC3E64E7B69}|QLNhaHangNhau\\QLNhaHangNhau.csproj|f:\\quanlynhahangnhau\\qlnhahangnhau\\qlnhahangnhau\\dao\\paymentdao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{590C0B16-0864-48D0-B560-0CC3E64E7B69}|QLNhaHangNhau\\QLNhaHangNhau.csproj|solutionrelative:qlnhahangnhau\\dao\\paymentdao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -38,34 +22,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 4,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "MoMo",
-              "DocumentMoniker": "F:\\QuanLyNhaHangNhau\\QLNhaHangNhau\\Momo\\MoMo.csproj",
-              "RelativeDocumentMoniker": "Momo\\MoMo.csproj",
-              "ToolTip": "F:\\QuanLyNhaHangNhau\\QLNhaHangNhau\\Momo\\MoMo.csproj",
-              "RelativeToolTip": "Momo\\MoMo.csproj",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAgAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-04-25T11:58:20.393Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "fQRCode.Designer.cs",
-              "DocumentMoniker": "F:\\QuanLyNhaHangNhau\\QLNhaHangNhau\\QLNhaHangNhau\\fQRCode.Designer.cs",
-              "RelativeDocumentMoniker": "QLNhaHangNhau\\fQRCode.Designer.cs",
-              "ToolTip": "F:\\QuanLyNhaHangNhau\\QLNhaHangNhau\\QLNhaHangNhau\\fQRCode.Designer.cs",
-              "RelativeToolTip": "QLNhaHangNhau\\fQRCode.Designer.cs",
-              "ViewState": "AgIAABkAAABAmZmZmZklwA0AAAAzAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-25T11:37:06.81Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
@@ -80,66 +38,41 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "fQRCode.cs",
-              "DocumentMoniker": "F:\\QuanLyNhaHangNhau\\QLNhaHangNhau\\QLNhaHangNhau\\fQRCode.cs",
-              "RelativeDocumentMoniker": "QLNhaHangNhau\\fQRCode.cs",
-              "ToolTip": "F:\\QuanLyNhaHangNhau\\QLNhaHangNhau\\QLNhaHangNhau\\fQRCode.cs",
-              "RelativeToolTip": "QLNhaHangNhau\\fQRCode.cs",
-              "ViewState": "AgIAABIAAAAgAAAAAAAqwBcAAAAxAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-25T10:43:05.673Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "fQRCode.cs [Design]",
-              "DocumentMoniker": "F:\\QuanLyNhaHangNhau\\QLNhaHangNhau\\QLNhaHangNhau\\fQRCode.cs",
-              "RelativeDocumentMoniker": "QLNhaHangNhau\\fQRCode.cs",
-              "ToolTip": "F:\\QuanLyNhaHangNhau\\QLNhaHangNhau\\QLNhaHangNhau\\fQRCode.cs [Design]",
-              "RelativeToolTip": "QLNhaHangNhau\\fQRCode.cs [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-25T10:36:00.083Z",
-              "EditorCaption": " [Design]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 1,
               "Title": "fTableManager.cs",
               "DocumentMoniker": "F:\\QuanLyNhaHangNhau\\QLNhaHangNhau\\QLNhaHangNhau\\fTableManager.cs",
               "RelativeDocumentMoniker": "QLNhaHangNhau\\fTableManager.cs",
               "ToolTip": "F:\\QuanLyNhaHangNhau\\QLNhaHangNhau\\QLNhaHangNhau\\fTableManager.cs",
               "RelativeToolTip": "QLNhaHangNhau\\fTableManager.cs",
-              "ViewState": "AgIAAM0BAAAA//////8nwNgBAAAtAAAAAAAAAA==",
+              "ViewState": "AgIAAAEBAAAAmZmZmZkvwFABAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-25T10:13:32.651Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Payment.cs",
-              "DocumentMoniker": "F:\\QuanLyNhaHangNhau\\QLNhaHangNhau\\QLNhaHangNhau\\DTO\\Payment.cs",
-              "RelativeDocumentMoniker": "QLNhaHangNhau\\DTO\\Payment.cs",
-              "ToolTip": "F:\\QuanLyNhaHangNhau\\QLNhaHangNhau\\QLNhaHangNhau\\DTO\\Payment.cs",
-              "RelativeToolTip": "QLNhaHangNhau\\DTO\\Payment.cs",
-              "ViewState": "AgIAAAkAAADgmZmZmZkZwB4AAAAkAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-24T04:21:15.546Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 0,
               "Title": "PaymentDAO.cs",
               "DocumentMoniker": "F:\\QuanLyNhaHangNhau\\QLNhaHangNhau\\QLNhaHangNhau\\DAO\\PaymentDAO.cs",
               "RelativeDocumentMoniker": "QLNhaHangNhau\\DAO\\PaymentDAO.cs",
               "ToolTip": "F:\\QuanLyNhaHangNhau\\QLNhaHangNhau\\QLNhaHangNhau\\DAO\\PaymentDAO.cs",
               "RelativeToolTip": "QLNhaHangNhau\\DAO\\PaymentDAO.cs",
-              "ViewState": "AgIAAHkAAAAAmpmZmZkZwH4AAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAABIAAADAl5mZmZkdwBkAAABTAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-24T03:30:07.024Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Payment.cs",
+              "DocumentMoniker": "F:\\QuanLyNhaHangNhau\\QLNhaHangNhau\\QLNhaHangNhau\\DTO\\Payment.cs",
+              "RelativeDocumentMoniker": "QLNhaHangNhau\\DTO\\Payment.cs",
+              "ToolTip": "F:\\QuanLyNhaHangNhau\\QLNhaHangNhau\\QLNhaHangNhau\\DTO\\Payment.cs",
+              "RelativeToolTip": "QLNhaHangNhau\\DTO\\Payment.cs",
+              "ViewState": "AgIAAAwAAACAzczMzMwMwBQAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-24T04:21:15.546Z",
               "EditorCaption": ""
             }
           ]
