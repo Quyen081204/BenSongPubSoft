@@ -1720,6 +1720,7 @@ namespace QLNhaHangNhau
             // 
             // dtgvIncome
             // 
+            dtgvIncome.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dtgvIncome.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dtgvIncome.Dock = DockStyle.Fill;
             dtgvIncome.Location = new Point(0, 0);
@@ -1745,6 +1746,7 @@ namespace QLNhaHangNhau
             btnViewIncome.TabIndex = 0;
             btnViewIncome.Text = "Xem thống kê";
             btnViewIncome.UseVisualStyleBackColor = true;
+            btnViewIncome.Click += btnViewIncome_Click;
             // 
             // dtpkToDate
             // 

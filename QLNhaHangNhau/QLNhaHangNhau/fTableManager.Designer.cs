@@ -44,7 +44,6 @@
             btnCheckOutCash = new Button();
             btnCheckOutMomo = new Button();
             txbTotalPrice = new TextBox();
-            cbSwitchTable = new ComboBox();
             btnSwitchTable = new Button();
             numDiscount = new NumericUpDown();
             btnDiscount = new Button();
@@ -165,7 +164,6 @@
             panel4.Controls.Add(btnCheckOutCash);
             panel4.Controls.Add(btnCheckOutMomo);
             panel4.Controls.Add(txbTotalPrice);
-            panel4.Controls.Add(cbSwitchTable);
             panel4.Controls.Add(btnSwitchTable);
             panel4.Controls.Add(numDiscount);
             panel4.Controls.Add(btnDiscount);
@@ -205,22 +203,15 @@
             txbTotalPrice.Text = "0";
             txbTotalPrice.TextAlign = HorizontalAlignment.Right;
             // 
-            // cbSwitchTable
-            // 
-            cbSwitchTable.FormattingEnabled = true;
-            cbSwitchTable.Location = new Point(3, 56);
-            cbSwitchTable.Name = "cbSwitchTable";
-            cbSwitchTable.Size = new Size(85, 23);
-            cbSwitchTable.TabIndex = 4;
-            // 
             // btnSwitchTable
             // 
             btnSwitchTable.Location = new Point(3, 15);
             btnSwitchTable.Name = "btnSwitchTable";
-            btnSwitchTable.Size = new Size(85, 31);
+            btnSwitchTable.Size = new Size(85, 64);
             btnSwitchTable.TabIndex = 7;
             btnSwitchTable.Text = "Chuyển bàn";
             btnSwitchTable.UseVisualStyleBackColor = true;
+            btnSwitchTable.Click += btnSwitchTable_Click;
             // 
             // numDiscount
             // 
@@ -323,7 +314,6 @@
         private NumericUpDown numDiscount;
         private Button btnDiscount;
         private Button btnSwitchTable;
-        private ComboBox cbSwitchTable;
         private ColumnHeader columnHeader1;
         private ColumnHeader columnHeader2;
         private ColumnHeader columnHeader3;

@@ -81,5 +81,20 @@ namespace QLNhaHangNhau.DAO
                 Console.WriteLine("== Reset table fail");
             }
         }
+
+        public List<Table> GetListEmptyTable(List<Table> tableList)
+        {
+            List<Table> emptyTables = new List<Table>();
+
+            foreach (var t in tableList)
+            {
+                if (t.Status == 0)
+                {
+                    emptyTables.Add(t);
+                }
+            }
+
+            return emptyTables;
+        }
     }
 }

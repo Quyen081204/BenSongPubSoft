@@ -16,6 +16,9 @@
     <Compile Update="fReserverTable.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="fSwitchTable.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="fTableManager.cs">
       <SubType>Form</SubType>
     </Compile>

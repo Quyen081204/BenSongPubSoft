@@ -17,6 +17,7 @@ namespace QLNhaHangNhau.DTO
         public int Capacity { get; set; } 
         
         public int? TableDetailID { get; set; }
+
         public Table(int id, string name, int status, int capacity, int tableDetailID)
         {
             Id = id;

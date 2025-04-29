@@ -23,7 +23,7 @@ namespace QLNhaHangNhau.DAO
     public class PaymentDAO
     {
         private static PaymentDAO instace;
-        private string baseBackEndUrl = "https://04c4-171-252-188-57.ngrok-free.app";
+        private string baseBackEndUrl = "https://5018-171-252-188-57.ngrok-free.app";
         public static PaymentDAO GetInstance()
         {
             if (instace == null)
@@ -212,12 +212,12 @@ namespace QLNhaHangNhau.DAO
                 if (paymentResponse != null && paymentResponse.status == true)
                 {
                     // The customer has paid the bill
-                    return true;
+                    return true; // Luu csdl 
                 }
                 
-                await Task.Delay(5000);
+                await Task.Delay(3000);
                 attempt++;
-                if (attempt == 24) // 2 minutes has ellapse
+                if (attempt == 30) // 5s has ellapse
                 {
                     flag = true;
                 }

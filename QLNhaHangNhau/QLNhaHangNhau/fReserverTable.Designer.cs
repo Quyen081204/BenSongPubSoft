@@ -96,6 +96,7 @@
             txbPhoneNumCus.Name = "txbPhoneNumCus";
             txbPhoneNumCus.Size = new Size(210, 23);
             txbPhoneNumCus.TabIndex = 5;
+            txbPhoneNumCus.Text = "0123456789";
             // 
             // txbNameCus
             // 
@@ -103,6 +104,7 @@
             txbNameCus.Name = "txbNameCus";
             txbNameCus.Size = new Size(210, 23);
             txbNameCus.TabIndex = 4;
+            txbNameCus.Text = "tester";
             // 
             // label3
             // 

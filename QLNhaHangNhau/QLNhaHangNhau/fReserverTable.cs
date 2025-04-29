@@ -26,7 +26,7 @@ namespace QLNhaHangNhau
             this.btnSaveReserveTable.Click += btnSaveReserveTable_Click;
             this.txbNameCus.Validating += new System.ComponentModel.CancelEventHandler(txbNameCus_validating);
             this.txbPhoneNumCus.Validating += new System.ComponentModel.CancelEventHandler(txbPhoneNumCus_validating);
-            Console.WriteLine("hahaha");
+            //Console.WriteLine("hahaha");
         }
 
         public fReserverTable(Account currentUser, Table table_clicked)
@@ -117,13 +117,13 @@ namespace QLNhaHangNhau
 
                 // Get table detail id and attach it to a table
                 // Update table status in database
-                
+
                 int tableDetailID = (int)DataProvider.Instance.ExecuteScalar(cmd);
                 // Console.WriteLine($"{tableDetailID} just inserted");
-               
+
                 Table_reserve.TableDetailID = tableDetailID;
                 Table_reserve.Status = 1;
-                
+
                 // For testing 
                 //if (TableDAO.Instance.UpadateTableStatus(table_reserve))
                 //{
@@ -131,7 +131,7 @@ namespace QLNhaHangNhau
                 //}
 
                 TableDAO.Instance.UpadateTableStatus(Table_reserve);
-                
+
                 // Update the main form after the table has been reserved
                 var tupleControls = (ValueTuple<Panel, Button, ListView>)this.Tag;
                 Panel pnlInfoTable = tupleControls.Item1;
@@ -144,7 +144,7 @@ namespace QLNhaHangNhau
                 btn.Text = "";
                 btn.Text = Table_reserve.Name + Environment.NewLine;
                 btn.Text += "Có khách";
-               // btn.BackColor = Color.Orange;
+                // btn.BackColor = Color.Orange;
 
                 // Cap nhat lại là bàn đã có người
                 btn.PerformClick();

@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using QLNhaHangNhau.DAO;
 using QLNhaHangNhau.DTO;
 using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 namespace QLNhaHangNhau
 {
@@ -24,6 +25,8 @@ namespace QLNhaHangNhau
         private Button? prevButton = null;
         // Hien thi vn dong
         CultureInfo culture = new CultureInfo("vi-VN");
+        private List<Table> tableList;
+        private List<Table> isCheckOut = new List<Table>();
 
         public fTableManager()
         {
@@ -55,7 +58,6 @@ namespace QLNhaHangNhau
         {
             adminToolStripMenuItem.Enabled = CurrentUser.Employee.RoleID == 4;
         }
-
         private void ReserveTable(Button btn, Table table_clicked)
         {
             fReserverTable.Tag = (pnlInfoTable, btn, lstReceipt);
@@ -64,7 +66,6 @@ namespace QLNhaHangNhau
             fReserverTable.Show();
             fReserverTable.ResetForm();
         }
-
         private void ShowOrderList(int? tableDetailID)
         {
 
@@ -96,7 +97,6 @@ namespace QLNhaHangNhau
                 txbTotalPrice.Text = totalPrice.ToString("c", culture);
             }
         }
-
         private void Add_info_total_price(string key, string value, int space = 2)
         {
             for (int i = 0; i < space; i++)
@@ -113,13 +113,15 @@ namespace QLNhaHangNhau
 
         private void LoadTable()
         {
-            List<Table> tableList = TableDAO.Instance.LoadTableList();
+            tableList = TableDAO.Instance.LoadTableList();
             foreach (Table table in tableList)
             {
                 Button btn = new Button() { Width = TableDAO.TableWidth, Height = TableDAO.TableHeight };
                 btn.Text = table.Name + Environment.NewLine;
-                btn.Click += table_clicked;
+                btn.Click += table_clicked;  // table_clicked is an event
+                
                 btn.Tag = table;
+                
                 if (table.Status == 1)
                 {
                     btn.Text += "Có khách";
@@ -142,14 +144,63 @@ namespace QLNhaHangNhau
             cbMenu.DataSource = listMenu;
             cbMenu.DisplayMember = "Name";
         }
-
         private void LoadFoodByMenuID(int menuID)
         {
             List<Food> listFood = FoodDAO.GetInstance().GetFoodByMenuID(menuID);
             cbFood.DataSource = listFood;
             cbFood.DisplayMember = "Name";
         }
+        private List<Button> GetListButtonEmpty()
+        {
+            List<Button> list_empty_button = new List<Button>();
+            foreach(Control c in fpnTable.Controls)
+            {
+                if (c is Button && c.BackColor == vacantColor)
+                {
+                    list_empty_button.Add((Button)c);
+                }
+            }
 
+            return list_empty_button;
+        }
+
+        private void ChangeTextButton(Button btn, List<string> text)
+        {
+            btn.Text = "";
+            foreach(string t in text)
+            {
+                btn.Text += t + Environment.NewLine;
+            }
+        }
+
+        private void DisableBtn()
+        {
+            // Disable button that need customer
+            numDiscount.Enabled = false;
+            numAddFood.Enabled = false;
+
+            btnDiscount.Enabled = false;
+            btnSwitchTable.Enabled = false;
+            btnCheckOutCash.Enabled = false;
+            btnCheckOutMomo.Enabled = false;
+            btnAddFood.Enabled = false;
+            btnReduceFood.Enabled = false;
+        }
+
+        private void EnableBtn()
+        {
+            // Enable button
+            btnAddFood.Enabled = true;
+            btnReduceFood.Enabled = true;
+            btnDiscount.Enabled = true;
+            btnSwitchTable.Enabled = true;
+            btnCheckOutCash.Enabled = true;
+            btnCheckOutMomo.Enabled = true;
+
+            numAddFood.Enabled = true;
+            numDiscount.Enabled = true;
+        }
+ 
         #endregion
 
         #region Events
@@ -174,6 +225,7 @@ namespace QLNhaHangNhau
             btnReduceFood.Tag = null;
             btnCheckOutCash.Tag = null;
             btnCheckOutMomo.Tag = null;
+            btnSwitchTable.Tag = null;
 
             numAddFood.Value = numAddFood.Minimum;
             numDiscount.Value = numDiscount.Minimum;
@@ -198,36 +250,21 @@ namespace QLNhaHangNhau
             }
 
             // Hien thi Form dat ban cho khach
-            if (table_clicked != null && table_clicked.Status == 0) // Ban con trong
+            if (table_clicked != null && table_clicked.Status == 0)
             {
-                // Disable button that need customer
-                btnAddFood.Enabled = false;
-                btnReduceFood.Enabled = false;
-                numDiscount.Enabled = false;
-                btnSwitchTable.Enabled = false;
-                btnCheckOutCash.Enabled = false;
-                btnCheckOutMomo.Enabled = false;
-                numAddFood.Enabled = false;
-                btnDiscount.Enabled = false;
+                // Ban con trong
+                DisableBtn();
 
                 // Temporarily remove receipt
                 pnlInfoTable.Controls.Remove(lstReceipt);
                 ReserveTable(btn, table_clicked);
+                return;
             }
 
-            // Ban da co khach
+            // Ban da co khach va dang ko thanh toan
             if (table_clicked.Status == 1)
             {
-                // Enable button
-                // Disable button that need customer
-                btnAddFood.Enabled = true;
-                btnReduceFood.Enabled = true;
-                numDiscount.Enabled = true;
-                btnSwitchTable.Enabled = true;
-                btnCheckOutCash.Enabled = true;
-                btnCheckOutMomo.Enabled = true;
-                numAddFood.Enabled = true;
-                btnDiscount.Enabled = true;
+                EnableBtn();
 
                 pnlInfoTable.Controls.Remove(fReserverTable);
                 pnlInfoTable.Controls.Add(lstReceipt);
@@ -238,9 +275,19 @@ namespace QLNhaHangNhau
 
                 // When checkout we know which table need checkout
                 btnCheckOutCash.Tag = table_clicked;
-                btnCheckOutMomo.Tag = table_clicked;
+                btnCheckOutMomo.Tag = (table_clicked, btn);
+
+                // When switching table we need to know which table need to switch
+                btnSwitchTable.Tag = (table_clicked,btn);
+                // Load list of empty table that this table can switch to
+                // LoadEmptyTables(table_clicked);
 
                 ShowOrderList(table_clicked.TableDetailID);
+            }
+
+            if (isCheckOut.Any(table => table == table_clicked))
+            {
+                DisableBtn();
             }
         }
 
@@ -313,6 +360,10 @@ namespace QLNhaHangNhau
                                 numAddFood.Value = numAddFood.Minimum;
                                 ShowOrderList(table_clicked.TableDetailID);
                             }
+                            return;
+                        }
+                        else
+                        {
                             return;
                         }
                     }
@@ -391,7 +442,7 @@ namespace QLNhaHangNhau
                     int total_price = int.Parse(Regex.Replace(txbTotalPrice.Text, @"[^\d]", ""));
                     int status = 1; // Success
                     string payment_method = "CASH";
-                    Bill bill = new Bill(CurrentUser.Employee.Id, (int)table_clicked.TableDetailID, discount , payment_method, total_price, status);
+                    Bill bill = new Bill(CurrentUser.Employee.Id, (int)table_clicked.TableDetailID, discount, payment_method, total_price, status);
                     // Tao hoa don
                     int rowAffected = BillDAO.GetInstance().CreateBillCash(bill);
                     if (rowAffected > 0)
@@ -434,6 +485,7 @@ namespace QLNhaHangNhau
             Console.WriteLine("== momo momo ==");
             // Neu chua co ban nao duoc chon
 
+
             if (prevButton == null)
             {
                 MessageBox.Show("Chưa có bàn được chọn !!!", "Thông báo");
@@ -442,10 +494,14 @@ namespace QLNhaHangNhau
 
             Button btnCheckOutMomo = sender as Button;
             Table table_clicked = null;
+            Button btnGoWithTableClicked = null;
 
-            if (btnCheckOutMomo != null && btnCheckOutMomo.Tag is Table)
+            if (btnCheckOutMomo != null)
             {
-                table_clicked = (Table)btnCheckOutMomo.Tag;
+                var tupleControls = (ValueTuple<Table, Button>)btnCheckOutMomo.Tag;
+
+                table_clicked = tupleControls.Item1;
+                btnGoWithTableClicked = tupleControls.Item2;
             }
 
             if (table_clicked != null)
@@ -455,7 +511,7 @@ namespace QLNhaHangNhau
                 {
                     MessageBox.Show("Bàn chưa có order đồ ăn", "Thông báo");
                 }
-                else 
+                else
                 {
                     // Tinh toan discount gia lap nut discount bam
                     int discount = (int)numDiscount.Value;
@@ -474,15 +530,17 @@ namespace QLNhaHangNhau
                     {
                         // Hien thi ma qrcode
                         fQRCode fQRCode = new fQRCode(qrCodeImage);
+                        fQRCode.Text = $"MoMo {table_clicked.Name}";
                         fQRCode.Show();
 
-                        // Delay 1p30s de ng dung thanh toan
-                        await Task.Delay(15000);
+                        DisableBtn();
+                        // Them vao danh sach ban dang checkout
+                        ChangeTextButton(btnGoWithTableClicked, new List<string> { $"{table_clicked.Name}", "Đang thanh toán" });
+                        isCheckOut.Add(table_clicked);
 
-                        fQRCode.Close();
+                        await Task.Delay(3000);
 
-                        await Task.Delay(5000);
-                        // Kiem tra thanh toan trong 2 phut -> lien tuc gui request toi api back end 
+                        // Kiem tra thanh toan trong 1p30 -> lien tuc gui request toi api back end 
                         bool isPaid = await PaymentDAO.GetInstance().CheckPayment(pay_bill.orderId);
 
                         if (isPaid == true)
@@ -508,31 +566,39 @@ namespace QLNhaHangNhau
                                 TableDAO.Instance.TableStatusReset(table_clicked);
 
                                 // Cap nhat trang thai btn cho ban vua thanh toan
-                                prevButton.Text = string.Empty;
-                                prevButton.Text = table_clicked.Name + Environment.NewLine;
-                                prevButton.Text += "Trống" + Environment.NewLine;
-                                prevButton.Text += $"SL {table_clicked.Capacity}";
-
+                                btnGoWithTableClicked.Text = string.Empty;
+                                btnGoWithTableClicked.Text = table_clicked.Name + Environment.NewLine;
+                                btnGoWithTableClicked.Text += "Trống" + Environment.NewLine;
+                                btnGoWithTableClicked.Text += $"SL {table_clicked.Capacity}";
+                                btnGoWithTableClicked.BackColor = vacantColor;
                                 // Cap nhat ListView
                                 lstReceipt.Items.Clear();
 
                                 // Cap nhat num discount
                                 numDiscount.Value = numDiscount.Minimum;
 
-                                MessageBox.Show($"Thanh toán thành công {txbTotalPrice.Text}", "Thông báo");
+                                MessageBox.Show($"Thanh toán thành công {table_clicked.Name} {total_price.ToString()}", "Thông báo");
 
-                                // Reset txbTotalPrice
-                                txbTotalPrice.Text = "0";
+                                // Reset txbTotalPrice (Hien tai van dang bam vao ban nay)
+                                if (prevButton == btnGoWithTableClicked)
+                                {
+                                    txbTotalPrice.Text = "0";
+                                }
                             }
                             else
                             {
-                                MessageBox.Show("Thanh toán thất bại", "Thông báo");
+                                Console.WriteLine("Toa hoa don that bai");
                             }
                         }
                         else
                         {
-                            MessageBox.Show($"Thanh toán hóa đơn {table_clicked.Name} thất bại !!!", "Thông báo");
+                            ChangeTextButton(btnGoWithTableClicked, new List<string> { $"{table_clicked.Name}","Có khách"});
+                            Console.WriteLine($"Thanh toán hóa đơn {table_clicked.Name} không thành công !!!");
                         }
+
+                        fQRCode.Close();
+                        EnableBtn();
+                        isCheckOut.Remove(table_clicked);
                     }
                     else
                     {
@@ -542,12 +608,56 @@ namespace QLNhaHangNhau
             }
             else
             {
-               
+                Console.WriteLine("kekeke");
+            }
+        }
+
+        private void btnSwitchTable_Click(object sender, EventArgs e)
+        {
+            if (prevButton == null)
+            {
+                MessageBox.Show("Bạn chưa chọn bàn nào !!!", "Thông báo");
+                return;
             }
 
-            
+            Button btnSwitchTable = sender as Button;
+            var tupleControls = (ValueTuple<Table,Button>)btnSwitchTable.Tag;
+            Table table_clicked = null;
+            Button btnGoWithTable_clicked = null;
+
+            if (btnSwitchTable != null)
+            {
+                table_clicked = tupleControls.Item1;
+                btnGoWithTable_clicked = tupleControls.Item2;
+            }
+
+            if (table_clicked != null)
+            {
+                if (table_clicked.Status == 0)
+                {
+                    MessageBox.Show("Bàn hiện tại còn trống không thể chuyển");
+                    return;
+                }
+
+                // Get emty table list
+                List<Table> emptyTables = TableDAO.Instance.GetListEmptyTable(tableList);
+
+                if (emptyTables.Count == 0) 
+                {
+                    MessageBox.Show("Hiện tại đã hết bàn trống", "Thông báo");
+                    return;
+                }
+
+                // Get list button empty
+                List<Button> list_empty_button = GetListButtonEmpty();
+
+                fSwitchTable fSwitchTable = new fSwitchTable(emptyTables,list_empty_button, table_clicked, btnGoWithTable_clicked);
+                fSwitchTable.ShowDialog();
+            }
         }
         #endregion
     }
-
+     
+    // Done thanh toán đang xử lý thanh toán thì ko cho làm gì khác, nhưng vì chạy bất đồng bộ nên thread UI của mình ko bị block nên mình có thể
+    // làm những việc khác nên có thể đặt bàn , thanh toán cho bàn khác ...
 }

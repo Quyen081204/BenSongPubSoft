@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -74,6 +75,17 @@ namespace QLNhaHangNhau.DAO
             return rowAffected;
         }
 
+        public DataTable ShowInCome(DateTime fromDate, DateTime toDate)
+        {
+            string query = "EXEC DoanhThu @fromDate, @toDate";
+            SqlCommand cmd = new SqlCommand(query);
 
+            cmd.Parameters.AddWithValue("@fromDate", fromDate);
+            cmd.Parameters.AddWithValue("@toDate", toDate);
+
+            DataTable dt = DataProvider.Instance.ExecuteQuery(cmd);
+
+            return dt;
+        }
     }
 }

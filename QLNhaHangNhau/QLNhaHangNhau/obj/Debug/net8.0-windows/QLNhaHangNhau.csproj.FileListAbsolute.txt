@@ -73,3 +73,4 @@ F:\QuanLyNhaHangNhau\QLNhaHangNhau\QLNhaHangNhau\obj\Debug\net8.0-windows\QLNhaH
 F:\QuanLyNhaHangNhau\QLNhaHangNhau\QLNhaHangNhau\obj\Debug\net8.0-windows\QLNhaHangNhau.genruntimeconfig.cache
 F:\QuanLyNhaHangNhau\QLNhaHangNhau\QLNhaHangNhau\obj\Debug\net8.0-windows\ref\QLNhaHangNhau.dll
 F:\QuanLyNhaHangNhau\QLNhaHangNhau\QLNhaHangNhau\obj\Debug\net8.0-windows\QLNhaHangNhau.fQRCode.resources
+F:\QuanLyNhaHangNhau\QLNhaHangNhau\QLNhaHangNhau\obj\Debug\net8.0-windows\QLNhaHangNhau.fSwitchTable.resources

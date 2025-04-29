@@ -14,7 +14,6 @@ namespace QLNhaHangNhau.DAO
     {
         private static EmployeeDAO instance;
         private EmployeeDAO() { }
-
         public static EmployeeDAO GetInstance() 
         {
             if (instance == null) { instance = new EmployeeDAO(); }
