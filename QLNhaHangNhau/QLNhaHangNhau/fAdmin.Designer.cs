@@ -2021,9 +2021,9 @@ namespace QLNhaHangNhau
             tabAdmin.Controls.Add(tabRole);
             tabAdmin.Controls.Add(tabEmployee);
             tabAdmin.Controls.Add(tabTable);
+            tabAdmin.Controls.Add(tabFood);
             tabAdmin.Controls.Add(tabMenu);
             tabAdmin.Controls.Add(tabIncome);
-            tabAdmin.Controls.Add(tabFood);
             tabAdmin.Location = new Point(12, 12);
             tabAdmin.Name = "tabAdmin";
             tabAdmin.SelectedIndex = 0;

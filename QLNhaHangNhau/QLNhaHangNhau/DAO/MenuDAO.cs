@@ -57,8 +57,9 @@ namespace QLNhaHangNhau.DAO
 
         public List<string> GetNameOfMenu()
         {
-            string query = "SELECT TenMenu FROM Menu";
+            string query = "SELECT TenMenu FROM Menu WHERE Active = @status";
             SqlCommand cmd = new SqlCommand(query);
+            cmd.Parameters.AddWithValue("@status", "Đang bán");
             DataTable dt = DataProvider.Instance.ExecuteQuery(cmd);
             List<string> listNameMenu = new List<string>();
             foreach (DataRow row in dt.Rows)

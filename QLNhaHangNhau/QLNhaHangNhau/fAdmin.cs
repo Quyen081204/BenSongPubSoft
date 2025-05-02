@@ -443,6 +443,7 @@ namespace QLNhaHangNhau
                     // Update in parent form
                     UpdateCbMenuParentForm();
                     // Update in page Food
+                    ReLoadCbMenu_of_Food();
                     ReloadFoodDataSource();
                     LoadMenuToComboBox(cbFood_Menu);
                     LoadMenuToComboBox(cbAdd_Food_Menu);
@@ -470,6 +471,7 @@ namespace QLNhaHangNhau
                     // Update in parent form
                     UpdateCbMenuParentForm();
                     // Update in page Food
+                    ReLoadCbMenu_of_Food();
                     ReloadFoodDataSource();
                     LoadMenuToComboBox(cbFood_Menu);
                     LoadMenuToComboBox(cbAdd_Food_Menu);

@@ -24,7 +24,7 @@ namespace QLNhaHangNhau.DAO
     public class PaymentDAO
     {
         private static PaymentDAO instace;
-        private string baseBackEndUrl = "https://11fd-171-252-188-57.ngrok-free.app";
+        private string baseBackEndUrl = "https://bee5-171-252-188-57.ngrok-free.app";
         public static PaymentDAO GetInstance()
         {
             if (instace == null)
