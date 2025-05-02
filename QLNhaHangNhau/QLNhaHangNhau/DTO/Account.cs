@@ -10,10 +10,12 @@ namespace QLNhaHangNhau.DTO
 {
     public class Account
     {
+        public int ID { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
         public Employee Employee { get; set; }
 
+        public string Active { get; set; } = "Đang hoạt động";
         public Account(string username, string password, Employee employee)
         {
             this.Username = username;
@@ -26,6 +28,8 @@ namespace QLNhaHangNhau.DTO
             this.Username = row["username"].ToString();
             this.Password = row["password"].ToString();
             this.Employee = EmployeeDAO.GetInstance().GetEmployeeByID((int)row["NhanVienID"]);
+            this.Active = row["Active"].ToString();
+            this.ID = (int)row["id"];
         }
 
         public override string ToString()

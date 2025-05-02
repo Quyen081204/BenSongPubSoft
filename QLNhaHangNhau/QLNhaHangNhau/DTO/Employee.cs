@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using QLNhaHangNhau.DAO;
 
 namespace QLNhaHangNhau.DTO
 {
@@ -14,9 +15,10 @@ namespace QLNhaHangNhau.DTO
         public int Id { get; set; }
         public string Name { get; set; }
         public int Sex { get; set; }
+        public string GioiTinh => Sex == 1 ? "Nam" : "Nữ";
         public int RoleID { get; set;}
-        public DateTime JoinedDate { get; set;}
-
+        public Role Role { get; set; }
+        public DateTime JoinedDate { get; set; }
         public Employee(int id, string name, int sex, int roleID, DateTime joinedDate)
         {
             Id = id;
@@ -33,11 +35,12 @@ namespace QLNhaHangNhau.DTO
             Sex = (int)row["GioiTinh"];
             RoleID = (int)row["ChucVuID"];
             JoinedDate = (DateTime)row["Joined_date"];
+            Role = RoleDAO.GetInstance().GetRoleById((int)row["ChucVuID"]);
         }
 
         public override string ToString()
         {
-            return $"id: {Id}\n name: {Name}\nRoleID: {RoleID}";
+            return this.Name;
         }
     }
 }

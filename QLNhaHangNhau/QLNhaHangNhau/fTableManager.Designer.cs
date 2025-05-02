@@ -41,6 +41,7 @@
             cbFood = new ComboBox();
             cbMenu = new ComboBox();
             panel4 = new Panel();
+            btnCancelTable = new Button();
             btnCheckOutCash = new Button();
             btnCheckOutMomo = new Button();
             txbTotalPrice = new TextBox();
@@ -161,6 +162,7 @@
             // 
             // panel4
             // 
+            panel4.Controls.Add(btnCancelTable);
             panel4.Controls.Add(btnCheckOutCash);
             panel4.Controls.Add(btnCheckOutMomo);
             panel4.Controls.Add(txbTotalPrice);
@@ -171,6 +173,16 @@
             panel4.Name = "panel4";
             panel4.Size = new Size(361, 82);
             panel4.TabIndex = 4;
+            // 
+            // btnCancelTable
+            // 
+            btnCancelTable.Location = new Point(3, 56);
+            btnCancelTable.Name = "btnCancelTable";
+            btnCancelTable.Size = new Size(85, 25);
+            btnCancelTable.TabIndex = 11;
+            btnCancelTable.Text = "Hủy bàn";
+            btnCancelTable.UseVisualStyleBackColor = true;
+            btnCancelTable.Click += btnCancelTable_Click;
             // 
             // btnCheckOutCash
             // 
@@ -207,7 +219,7 @@
             // 
             btnSwitchTable.Location = new Point(3, 15);
             btnSwitchTable.Name = "btnSwitchTable";
-            btnSwitchTable.Size = new Size(85, 64);
+            btnSwitchTable.Size = new Size(85, 29);
             btnSwitchTable.TabIndex = 7;
             btnSwitchTable.Text = "Chuyển bàn";
             btnSwitchTable.UseVisualStyleBackColor = true;
@@ -225,7 +237,7 @@
             // 
             btnDiscount.Location = new Point(104, 15);
             btnDiscount.Name = "btnDiscount";
-            btnDiscount.Size = new Size(85, 31);
+            btnDiscount.Size = new Size(85, 29);
             btnDiscount.TabIndex = 5;
             btnDiscount.Text = "Giảm giá";
             btnDiscount.UseVisualStyleBackColor = true;
@@ -265,6 +277,7 @@
             đăngXuấtToolStripMenuItem.Name = "đăngXuấtToolStripMenuItem";
             đăngXuấtToolStripMenuItem.Size = new Size(170, 22);
             đăngXuấtToolStripMenuItem.Text = "Đăng xuất";
+            đăngXuấtToolStripMenuItem.Click += đăngXuấtToolStripMenuItem_Click;
             // 
             // menuStrip1
             // 
@@ -327,5 +340,6 @@
         private ToolStripMenuItem thôngTinCáNhânToolStripMenuItem;
         private ToolStripMenuItem đăngXuấtToolStripMenuItem;
         private MenuStrip menuStrip1;
+        private Button btnCancelTable;
     }
 }

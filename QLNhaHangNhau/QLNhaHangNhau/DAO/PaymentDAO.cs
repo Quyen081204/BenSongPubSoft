@@ -11,6 +11,7 @@ using QLNhaHangNhau.DTO;
 using QRCoder;
 using Newtonsoft.Json;
 using System.Text.Json;
+using System.Net.Http.Headers;
 
 
 namespace QLNhaHangNhau.DAO
@@ -23,7 +24,7 @@ namespace QLNhaHangNhau.DAO
     public class PaymentDAO
     {
         private static PaymentDAO instace;
-        private string baseBackEndUrl = "https://5018-171-252-188-57.ngrok-free.app";
+        private string baseBackEndUrl = "https://11fd-171-252-188-57.ngrok-free.app";
         public static PaymentDAO GetInstance()
         {
             if (instace == null)
@@ -154,27 +155,13 @@ namespace QLNhaHangNhau.DAO
             }
 
             return null;
-
-            //DialogResult result = MessageBox.Show(responseFromMomo, "Open in browser", MessageBoxButtons.OKCancel);
-            //if (result == DialogResult.OK)
-            //{
-            //    //yes...
-            //    Console.WriteLine(jmessage.GetValue("payUrl").ToString());
-            //    System.Diagnostics.Process.Start(jmessage.GetValue("payUrl").ToString());
-
-            //    SendPostRequest(payment);
-            //}
-            //else if (result == DialogResult.Cancel)
-            //{
-            //    //no.../*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/**/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/
-            //}
-
         }
 
         public async Task<PaymentResponse> SendPostRequest(string orderId)
         {
             using (HttpClient client = new HttpClient())
             {
+                client.BaseAddress = new Uri(baseBackEndUrl);
                 var data = new
                 {
                     order_id = orderId
@@ -186,21 +173,18 @@ namespace QLNhaHangNhau.DAO
 
                 StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                HttpResponseMessage response = await client.PostAsync($"{baseBackEndUrl}/api/checkOrderStatus/", content);
+                HttpResponseMessage response = await client.PostAsync("/api/checkOrderStatus/", content);
                 string responseFromBackEnd = await response.Content.ReadAsStringAsync();
-                
+
                 Console.WriteLine("--- Response from backend: " + responseFromBackEnd);
 
-                PaymentResponse paymentResponse = System.Text.Json.JsonSerializer.Deserialize<PaymentResponse>(responseFromBackEnd);
-                
+                var paymentResponse = System.Text.Json.JsonSerializer.Deserialize<PaymentResponse>(responseFromBackEnd);
 
                 return paymentResponse;
             }
         }
-
         public async Task<bool> CheckPayment(string orderId)
         {
-            // Each 5s send a polling check payment to check status of payment
             bool flag = false;
             int attempt = 0;
 
@@ -215,9 +199,9 @@ namespace QLNhaHangNhau.DAO
                     return true; // Luu csdl 
                 }
                 
-                await Task.Delay(3000);
+                await Task.Delay(5000);
                 attempt++;
-                if (attempt == 30) // 5s has ellapse
+                if (attempt == 12) 
                 {
                     flag = true;
                 }

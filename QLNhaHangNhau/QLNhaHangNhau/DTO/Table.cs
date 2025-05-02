@@ -12,11 +12,11 @@ namespace QLNhaHangNhau.DTO
         public int Id { get; set; }
         public string Name { get; set; }
 
-        public int Status { get; set; }
+        public int Status { get; set; } = 0;
 
-        public int Capacity { get; set; } 
-        
-        public int? TableDetailID { get; set; }
+        public int Capacity { get; set; }
+
+        public int? TableDetailID { get; set; } = null;
 
         public Table(int id, string name, int status, int capacity, int tableDetailID)
         {
@@ -26,6 +26,13 @@ namespace QLNhaHangNhau.DTO
             Capacity = capacity;
             TableDetailID = tableDetailID;
         }
+
+        public Table(int id, string name, int capacity)
+        {
+            Id = id;
+            Name = name;
+            Capacity = capacity;
+        }   
 
         public Table(DataRow row)
         {

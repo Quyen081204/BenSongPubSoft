@@ -96,5 +96,16 @@ namespace QLNhaHangNhau.DAO
 
             return emptyTables;
         }
+
+        public int CreateTable(string name, int capacity)
+        {
+            string query = "INSERT INTO BAN (TenBan, SLChua) OUTPUT Inserted.id VALUES (@name, @capacity)";
+            SqlCommand cmd = new SqlCommand(query);
+            cmd.Parameters.AddWithValue("@name", name);
+            cmd.Parameters.AddWithValue("@capacity", capacity);
+
+            int idNewTable = (int)DataProvider.Instance.ExecuteScalar(cmd);
+            return idNewTable;
+        }
     }
 }

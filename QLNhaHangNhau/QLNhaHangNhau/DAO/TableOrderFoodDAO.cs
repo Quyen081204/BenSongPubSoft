@@ -50,5 +50,20 @@ namespace QLNhaHangNhau.DAO
 
             return listTableOrderFoods;
         }
+
+        public bool CheckIfTableOrderFood(int tableDetailID)
+        {
+            string query = "SELECT 1 FROM OrderMon WHERE ChiTietBanID = @tableDetailID";
+            SqlCommand cmd = new SqlCommand(query);
+            cmd.Parameters.AddWithValue("@tableDetailID", tableDetailID);
+
+            object result = DataProvider.Instance.ExecuteScalar(cmd);
+            if (result != null && result != DBNull.Value)
+            {
+                return true;
+            }
+
+            return false;
+        }
     }
 }

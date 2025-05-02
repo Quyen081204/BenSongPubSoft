@@ -29,14 +29,16 @@ def processMoMoCallBack(request):
 
 @csrf_exempt
 def checkOrder(request):
-    data = json.loads(request.body)
-    order_id = data.get('order_id')
-    #check
-    order = Order.objects.filter(order_id=order_id).first()
-    if order == None:
-        return JsonResponse({"resultCode":-1, "status": False})
+    if request.method == 'POST':
+        print("== Nhan dc Request tu winform")
+        data = json.loads(request.body)
+        order_id = data.get('order_id')
+        #check
+        order = Order.objects.filter(order_id=order_id).first()
+        if order == None:
+            return JsonResponse({"resultCode":-1, "status": False})
 
-    return JsonResponse({"resultCode": order.result_code, "status":order.status})
+        return JsonResponse({"resultCode": order.result_code, "status":order.status})
 
 
 

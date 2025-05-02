@@ -1,20 +1,7 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "F:\\QuanLyNhaHangNhau\\QLNhaHangNhau\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{590C0B16-0864-48D0-B560-0CC3E64E7B69}|QLNhaHangNhau\\QLNhaHangNhau.csproj|f:\\quanlynhahangnhau\\qlnhahangnhau\\qlnhahangnhau\\fadmin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{590C0B16-0864-48D0-B560-0CC3E64E7B69}|QLNhaHangNhau\\QLNhaHangNhau.csproj|solutionrelative:qlnhahangnhau\\fadmin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{590C0B16-0864-48D0-B560-0CC3E64E7B69}|QLNhaHangNhau\\QLNhaHangNhau.csproj|f:\\quanlynhahangnhau\\qlnhahangnhau\\qlnhahangnhau\\fadmin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{590C0B16-0864-48D0-B560-0CC3E64E7B69}|QLNhaHangNhau\\QLNhaHangNhau.csproj|solutionrelative:qlnhahangnhau\\fadmin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{590C0B16-0864-48D0-B560-0CC3E64E7B69}|QLNhaHangNhau\\QLNhaHangNhau.csproj|f:\\quanlynhahangnhau\\qlnhahangnhau\\qlnhahangnhau\\dao\\billdao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{590C0B16-0864-48D0-B560-0CC3E64E7B69}|QLNhaHangNhau\\QLNhaHangNhau.csproj|solutionrelative:qlnhahangnhau\\dao\\billdao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    }
-  ],
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -22,7 +9,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": -1,
           "Children": [
             {
               "$type": "Bookmark",
@@ -35,44 +22,6 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "BillDAO.cs",
-              "DocumentMoniker": "F:\\QuanLyNhaHangNhau\\QLNhaHangNhau\\QLNhaHangNhau\\DAO\\BillDAO.cs",
-              "RelativeDocumentMoniker": "QLNhaHangNhau\\DAO\\BillDAO.cs",
-              "ToolTip": "F:\\QuanLyNhaHangNhau\\QLNhaHangNhau\\QLNhaHangNhau\\DAO\\BillDAO.cs",
-              "RelativeToolTip": "QLNhaHangNhau\\DAO\\BillDAO.cs",
-              "ViewState": "AgIAABMAAACAZmZmZmYSwFcAAAAWAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-29T12:00:17.369Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "fAdmin.cs",
-              "DocumentMoniker": "F:\\QuanLyNhaHangNhau\\QLNhaHangNhau\\QLNhaHangNhau\\fAdmin.cs",
-              "RelativeDocumentMoniker": "QLNhaHangNhau\\fAdmin.cs",
-              "ToolTip": "F:\\QuanLyNhaHangNhau\\QLNhaHangNhau\\QLNhaHangNhau\\fAdmin.cs*",
-              "RelativeToolTip": "QLNhaHangNhau\\fAdmin.cs*",
-              "ViewState": "AgIAAAgAAAAAAAAAAAAtwA0AAAA9AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-29T11:59:55.847Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "fAdmin.cs [Design]",
-              "DocumentMoniker": "F:\\QuanLyNhaHangNhau\\QLNhaHangNhau\\QLNhaHangNhau\\fAdmin.cs",
-              "RelativeDocumentMoniker": "QLNhaHangNhau\\fAdmin.cs",
-              "ToolTip": "F:\\QuanLyNhaHangNhau\\QLNhaHangNhau\\QLNhaHangNhau\\fAdmin.cs [Design]*",
-              "RelativeToolTip": "QLNhaHangNhau\\fAdmin.cs [Design]*",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-29T11:58:02.114Z",
-              "EditorCaption": " [Design]"
             }
           ]
         }

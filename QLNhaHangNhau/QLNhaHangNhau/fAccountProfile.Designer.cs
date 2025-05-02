@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             panel2 = new Panel();
             txbShowName = new TextBox();
             lblHienThi = new Label();
@@ -35,16 +36,19 @@
             txtUsername = new TextBox();
             label1 = new Label();
             panel3 = new Panel();
+            lblOldPassMsg = new Label();
             txbPassword = new TextBox();
             lblPassWord = new Label();
             panel4 = new Panel();
-            textBox1 = new TextBox();
+            txbNewPassword = new TextBox();
             lblNewpass = new Label();
             panel5 = new Panel();
-            textBox2 = new TextBox();
+            lblRepeatPassMsg = new Label();
+            txbRepeatNewPass = new TextBox();
             label3 = new Label();
             btnExit = new Button();
             btnUpdate = new Button();
+            toolTipBtnUpdate = new ToolTip(components);
             panel2.SuspendLayout();
             panel1.SuspendLayout();
             panel3.SuspendLayout();
@@ -106,12 +110,21 @@
             // 
             // panel3
             // 
+            panel3.Controls.Add(lblOldPassMsg);
             panel3.Controls.Add(txbPassword);
             panel3.Controls.Add(lblPassWord);
             panel3.Location = new Point(0, 148);
             panel3.Name = "panel3";
             panel3.Size = new Size(543, 67);
             panel3.TabIndex = 3;
+            // 
+            // lblOldPassMsg
+            // 
+            lblOldPassMsg.AutoSize = true;
+            lblOldPassMsg.Location = new Point(185, 48);
+            lblOldPassMsg.Name = "lblOldPassMsg";
+            lblOldPassMsg.Size = new Size(0, 15);
+            lblOldPassMsg.TabIndex = 1;
             // 
             // txbPassword
             // 
@@ -126,26 +139,26 @@
             lblPassWord.AutoSize = true;
             lblPassWord.Location = new Point(44, 25);
             lblPassWord.Name = "lblPassWord";
-            lblPassWord.Size = new Size(60, 15);
+            lblPassWord.Size = new Size(102, 15);
             lblPassWord.TabIndex = 0;
-            lblPassWord.Text = "Mật khẩu:";
+            lblPassWord.Text = "Mật khẩu hiện tại:";
             // 
             // panel4
             // 
-            panel4.Controls.Add(textBox1);
+            panel4.Controls.Add(txbNewPassword);
             panel4.Controls.Add(lblNewpass);
             panel4.Location = new Point(0, 221);
             panel4.Name = "panel4";
             panel4.Size = new Size(543, 67);
             panel4.TabIndex = 4;
             // 
-            // textBox1
+            // txbNewPassword
             // 
-            textBox1.Location = new Point(185, 22);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(252, 23);
-            textBox1.TabIndex = 0;
-            textBox1.UseSystemPasswordChar = true;
+            txbNewPassword.Location = new Point(185, 22);
+            txbNewPassword.Name = "txbNewPassword";
+            txbNewPassword.Size = new Size(252, 23);
+            txbNewPassword.TabIndex = 0;
+            txbNewPassword.UseSystemPasswordChar = true;
             // 
             // lblNewpass
             // 
@@ -158,20 +171,30 @@
             // 
             // panel5
             // 
-            panel5.Controls.Add(textBox2);
+            panel5.Controls.Add(lblRepeatPassMsg);
+            panel5.Controls.Add(txbRepeatNewPass);
             panel5.Controls.Add(label3);
             panel5.Location = new Point(0, 294);
             panel5.Name = "panel5";
             panel5.Size = new Size(543, 67);
             panel5.TabIndex = 5;
             // 
-            // textBox2
+            // lblRepeatPassMsg
             // 
-            textBox2.Location = new Point(185, 22);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(252, 23);
-            textBox2.TabIndex = 0;
-            textBox2.UseSystemPasswordChar = true;
+            lblRepeatPassMsg.AutoSize = true;
+            lblRepeatPassMsg.ForeColor = SystemColors.ControlText;
+            lblRepeatPassMsg.Location = new Point(185, 48);
+            lblRepeatPassMsg.Name = "lblRepeatPassMsg";
+            lblRepeatPassMsg.Size = new Size(0, 15);
+            lblRepeatPassMsg.TabIndex = 1;
+            // 
+            // txbRepeatNewPass
+            // 
+            txbRepeatNewPass.Location = new Point(185, 22);
+            txbRepeatNewPass.Name = "txbRepeatNewPass";
+            txbRepeatNewPass.Size = new Size(252, 23);
+            txbRepeatNewPass.TabIndex = 0;
+            txbRepeatNewPass.UseSystemPasswordChar = true;
             // 
             // label3
             // 
@@ -199,6 +222,7 @@
             btnUpdate.Size = new Size(75, 23);
             btnUpdate.TabIndex = 6;
             btnUpdate.Text = "Cập nhật";
+            toolTipBtnUpdate.SetToolTip(btnUpdate, "Cập nhật mật khẩu mới");
             btnUpdate.UseVisualStyleBackColor = true;
             btnUpdate.Click += btnUpdate_Click;
             // 
@@ -244,12 +268,15 @@
         private TextBox txbPassword;
         private Label lblPassWord;
         private Panel panel4;
-        private TextBox textBox1;
+        private TextBox txbNewPassword;
         private Label lblNewpass;
         private Panel panel5;
-        private TextBox textBox2;
+        private TextBox txbRepeatNewPass;
         private Label label3;
         private Button btnExit;
         private Button btnUpdate;
+        private ToolTip toolTipBtnUpdate;
+        private Label lblOldPassMsg;
+        private Label lblRepeatPassMsg;
     }
 }

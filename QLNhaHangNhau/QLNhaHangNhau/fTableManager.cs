@@ -53,7 +53,6 @@ namespace QLNhaHangNhau
         }
 
         #region Method
-
         private void WhetherEnableAdminTab()
         {
             adminToolStripMenuItem.Enabled = CurrentUser.Employee.RoleID == 4;
@@ -119,9 +118,9 @@ namespace QLNhaHangNhau
                 Button btn = new Button() { Width = TableDAO.TableWidth, Height = TableDAO.TableHeight };
                 btn.Text = table.Name + Environment.NewLine;
                 btn.Click += table_clicked;  // table_clicked is an event
-                
+
                 btn.Tag = table;
-                
+
                 if (table.Status == 1)
                 {
                     btn.Text += "Có khách";
@@ -153,7 +152,7 @@ namespace QLNhaHangNhau
         private List<Button> GetListButtonEmpty()
         {
             List<Button> list_empty_button = new List<Button>();
-            foreach(Control c in fpnTable.Controls)
+            foreach (Control c in fpnTable.Controls)
             {
                 if (c is Button && c.BackColor == vacantColor)
                 {
@@ -167,7 +166,7 @@ namespace QLNhaHangNhau
         private void ChangeTextButton(Button btn, List<string> text)
         {
             btn.Text = "";
-            foreach(string t in text)
+            foreach (string t in text)
             {
                 btn.Text += t + Environment.NewLine;
             }
@@ -185,6 +184,7 @@ namespace QLNhaHangNhau
             btnCheckOutMomo.Enabled = false;
             btnAddFood.Enabled = false;
             btnReduceFood.Enabled = false;
+            btnCancelTable.Enabled = false;
         }
 
         private void EnableBtn()
@@ -196,25 +196,61 @@ namespace QLNhaHangNhau
             btnSwitchTable.Enabled = true;
             btnCheckOutCash.Enabled = true;
             btnCheckOutMomo.Enabled = true;
+            btnCancelTable.Enabled = true;
 
             numAddFood.Enabled = true;
             numDiscount.Enabled = true;
         }
- 
+
+        public void ReloadCbFood()
+        {
+            var currentMenu = cbMenu.SelectedItem as Menu;
+            LoadFoodByMenuID(currentMenu.ID);
+        }
+
+        public void ReloadCbMenu()
+        {
+            LoadMenu();
+        }
+
+        public void ReloadCurrentAdmin(Account newAdminAcc)
+        {
+            if (newAdminAcc.ID == CurrentUser.ID)
+                CurrentUser.Username = newAdminAcc.Username;
+        }
+
+        public void ReloadAddNewTable(Table newTable)
+        {
+            Button btn = new Button() { Width = TableDAO.TableWidth, Height = TableDAO.TableHeight };
+            btn.Text = newTable.Name + Environment.NewLine;
+            btn.Click += table_clicked;  // table_clicked is an event
+            btn.Tag = newTable;
+
+            btn.Text += "Trống" + Environment.NewLine;
+            btn.Text += $"SL {newTable.Capacity}";
+            btn.BackColor = vacantColor;
+
+            fpnTable.Controls.Add(btn);
+        }
+
         #endregion
 
         #region Events
         private void thôngTinCáNhânToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            fAccountProfile fAccountProfile = new fAccountProfile();
+            fAccountProfile fAccountProfile = new fAccountProfile(CurrentUser);
             fAccountProfile.ShowDialog();
-            this.Show();
         }
 
         private void adminToolStripMenuItem_Click(object sender, EventArgs e)
         {
             fAdmin fAdmin = new fAdmin();
-            fAdmin.ShowDialog();
+            fAdmin.ShowDialog(this);
+        }
+
+        private void đăngXuấtToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
 
         private void table_clicked(object sender, EventArgs e)
@@ -226,6 +262,8 @@ namespace QLNhaHangNhau
             btnCheckOutCash.Tag = null;
             btnCheckOutMomo.Tag = null;
             btnSwitchTable.Tag = null;
+            btnCancelTable.Tag = null;
+            btnDiscount.Tag = null;
 
             numAddFood.Value = numAddFood.Minimum;
             numDiscount.Value = numDiscount.Minimum;
@@ -278,9 +316,10 @@ namespace QLNhaHangNhau
                 btnCheckOutMomo.Tag = (table_clicked, btn);
 
                 // When switching table we need to know which table need to switch
-                btnSwitchTable.Tag = (table_clicked,btn);
-                // Load list of empty table that this table can switch to
-                // LoadEmptyTables(table_clicked);
+                btnSwitchTable.Tag = (table_clicked, btn);
+
+                // Cancel for table click
+                btnCancelTable.Tag = (table_clicked, btn);
 
                 ShowOrderList(table_clicked.TableDetailID);
             }
@@ -592,7 +631,7 @@ namespace QLNhaHangNhau
                         }
                         else
                         {
-                            ChangeTextButton(btnGoWithTableClicked, new List<string> { $"{table_clicked.Name}","Có khách"});
+                            ChangeTextButton(btnGoWithTableClicked, new List<string> { $"{table_clicked.Name}", "Có khách" });
                             Console.WriteLine($"Thanh toán hóa đơn {table_clicked.Name} không thành công !!!");
                         }
 
@@ -621,7 +660,7 @@ namespace QLNhaHangNhau
             }
 
             Button btnSwitchTable = sender as Button;
-            var tupleControls = (ValueTuple<Table,Button>)btnSwitchTable.Tag;
+            var tupleControls = (ValueTuple<Table, Button>)btnSwitchTable.Tag;
             Table table_clicked = null;
             Button btnGoWithTable_clicked = null;
 
@@ -642,7 +681,7 @@ namespace QLNhaHangNhau
                 // Get emty table list
                 List<Table> emptyTables = TableDAO.Instance.GetListEmptyTable(tableList);
 
-                if (emptyTables.Count == 0) 
+                if (emptyTables.Count == 0)
                 {
                     MessageBox.Show("Hiện tại đã hết bàn trống", "Thông báo");
                     return;
@@ -651,13 +690,57 @@ namespace QLNhaHangNhau
                 // Get list button empty
                 List<Button> list_empty_button = GetListButtonEmpty();
 
-                fSwitchTable fSwitchTable = new fSwitchTable(emptyTables,list_empty_button, table_clicked, btnGoWithTable_clicked);
+                fSwitchTable fSwitchTable = new fSwitchTable(emptyTables, list_empty_button, table_clicked, btnGoWithTable_clicked);
                 fSwitchTable.ShowDialog();
             }
         }
+
+        private void btnCancelTable_Click(object sender, EventArgs e)
+        {
+            if (prevButton == null)
+            {
+                MessageBox.Show("Bạn chưa chọn bàn nào !!!", "Thông báo");
+                return;
+            }
+
+            Button btnCancelTable = sender as Button;
+            var tupleControls = (ValueTuple<Table, Button>)btnCancelTable.Tag;
+            Table table_clicked = null;
+            Button btnGoWithTable_clicked = null;
+
+            if (btnCancelTable.Tag != null)
+            {
+                table_clicked = tupleControls.Item1;
+                btnGoWithTable_clicked = tupleControls.Item2;
+            }
+
+            // Only cancel table if that table is has customer and they havent order food yet
+            if (TableOrderFoodDAO.GetInstance().CheckIfTableOrderFood((int)table_clicked.TableDetailID))
+            {
+                MessageBox.Show("Bàn đã order món thì không thể hủy, vui lòng thanh toán !!!", "Thông báo");
+                return;
+            }
+            else
+            {
+                // Ban chua order mon nao
+                TableDAO.Instance.TableStatusReset(table_clicked);
+                ChangeTextButton(btnGoWithTable_clicked, new List<string> { $"{table_clicked.Name}", "Trống", $"SL {table_clicked.Capacity}" });
+                // Update GUI for reservation
+                btnGoWithTable_clicked.PerformClick();
+                MessageBox.Show($"Hủy {table_clicked.Name} thành công", "Thông báo");
+            }
+
+        }
+
         #endregion
+
     }
-     
+
     // Done thanh toán đang xử lý thanh toán thì ko cho làm gì khác, nhưng vì chạy bất đồng bộ nên thread UI của mình ko bị block nên mình có thể
     // làm những việc khác nên có thể đặt bàn , thanh toán cho bàn khác ...
+
+
+    // Ngay cuoi cung
+
+    // Done tat ca khi chay thi can khoi dong ngrok http 8000 , start server va thay doi baseBackEndURL la xong hehehes
 }

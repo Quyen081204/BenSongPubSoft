@@ -8,14 +8,19 @@ namespace QLNhaHangNhau
         public fLogin()
         {
             InitializeComponent();
-
-            //CreateAccount();
+            //Console.WriteLine(AccountDAO.Instance.CheckExistUserName("admijjn"));
+            //Console.WriteLine(TableOrderFoodDAO.GetInstance().CheckIfTableOrderFood(0));
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
             string username = txbUsername.Text;
             string password = txbPassword.Text;
+            if (!AccountDAO.Instance.CheckActiveAccount(username))
+            {
+                MessageBox.Show("Tài khoản đã ngưng hoạt động", "Thông báo");
+                return;
+            }
             if(Login(username,password))
             {
                 Account currentUser = AccountDAO.Instance.GetAccountByUserName(username);
@@ -53,17 +58,6 @@ namespace QLNhaHangNhau
             {
                 e.Cancel = true;
             }
-        }
-
-        private void CreateAccount()
-        {
-            string username = "lyly";
-            string password = "123";
-
-            string hashedPass = BCrypt.Net.BCrypt.EnhancedHashPassword(password);
-            string cmd = "INSERT INTO Account (username, password, NhanVienID) VALUES ( @username , @password , @nvID )";
-            int nvid = 3;
-            DAO.DataProvider.Instance.ExecuteNonQuery(cmd, new string[] { username, hashedPass, nvid.ToString() });
         }
     }
 }
